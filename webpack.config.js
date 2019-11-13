@@ -24,17 +24,16 @@ module.exports = {
   output: {
     filename: '[name]/bundle.js',
     path: path.resolve(__dirname, './dist'),
-    sourceMapFilename: '[fail].map'
+    sourceMapFilename: '[file].map',
+    publicPath: '/'
   },
   devtool: devMode ? 'eval-source-map' : '',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true, // 一切都启用 gzip压缩
     port: 8018,
-    // noInfo: false, //true 用来隐藏 bundle 的一些信息
-    warnings: true,
-    errors: true
-  },
+    hot: true,
+  }, 
   resolve: {
     alias: {
       components: path.resolve(__dirname, './src/components/')

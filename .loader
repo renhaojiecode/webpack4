@@ -2,6 +2,12 @@
 
 script
   rm -rf ./dist &&  或 clean-webpack-plugin 用来在编译之前清理编译生成的文件夹
+  node server.js
+    express 和 webpack-dev-middleware 配合使用进行编译
+  webpack --watch && webpack-dev-server --progress
+    使用webpack-dev-server 来编译 并且因为编译的文件在内存中不在磁盘上所以无法看到
+    webpack --watch  可以使编译文件在磁盘上写入 被我们看到更好地调试代码
+  cross-env NODE_ENV=development  全局化NODE_ENV
 "cross-env": "^6.0.3",  可以在 script中全局化 NODE_ENV 的值 针对不同的命令差异化处理webpack config
 "css-loader": "^3.2.0", 将 CSS 转化成 CommonJS 模块
 "eslint": "^6.6.0", 检查js 代码语法
