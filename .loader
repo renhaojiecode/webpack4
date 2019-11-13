@@ -1,7 +1,13 @@
 这是因为，注入的 runtime 和 manifest 在每次构建后都会发生变化。
-
+eslint  报正则问题时  node版本有问题
 script
   rm -rf ./dist &&  或 clean-webpack-plugin 用来在编译之前清理编译生成的文件夹
+  node server.js
+    express 和 webpack-dev-middleware 配合使用进行编译
+  webpack --watch && webpack-dev-server --progress
+    使用webpack-dev-server 来编译 并且因为编译的文件在内存中不在磁盘上所以无法看到
+    webpack --watch  可以使编译文件在磁盘上写入 被我们看到更好地调试代码
+  cross-env NODE_ENV=development  全局化NODE_ENV
 "cross-env": "^6.0.3",  可以在 script中全局化 NODE_ENV 的值 针对不同的命令差异化处理webpack config
 "css-loader": "^3.2.0", 将 CSS 转化成 CommonJS 模块
 "eslint": "^6.6.0", 检查js 代码语法
@@ -15,4 +21,20 @@ script
 "webpack-cli": "^3.3.10"
 
 
-webpack-manifest-plugin  通过 WebpackManifestPlugin 插件，可以将 manifest 数据提取为一个容易使用的 json 文件。
+webpack-manifest-plugin  通过 webpack-manifest-plugin 插件，可以将 manifest 数据提取为一个容易使用的 json 文件。
+optimization: { //这几个配置可以优化编译速度、防止没有关联的文件被编译
+    namedModules: true,
+    //runtimeChunk: 'single',
+    namedChunks: true, // 防止chunk id 根据自增而改变
+}
+
+//hot: true, // 模块热替换HotModuleReplacementPlugin 不能使用chunkhash 和 contenthash
+disableHostCheck: true, // 绕过主机 host 检查   可以使用本地hosts配置域名
+// useLocalIp: true, // 允许使用本地ip  未成功原因不明
+writeToDisk: true, // 将文件写入磁盘
+
+home/style-7b1f641b25066c9852.css home/bundle-af00f4caecb934b43e.js
+homecopy/style-1970772c129706fa49.css homecopy/bundle-df46567ce1c61fb93f.js
+
+home/style-d0940f18a800479e82.css home/bundle-0f0db766bb1cb73002.js
+homecopy = homecopy/style-a929d101012f11784d.css homecopy/bundle-d1a514c0c3434765a3.js

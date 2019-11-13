@@ -1,0 +1,15 @@
+name: Webpack Build
+on:
+  push:
+    branches:
+      - master
+      - dev
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        repo-token: ${{ secrets.ACCESS_TOKEN }}
+    - run: npm install && npm run build

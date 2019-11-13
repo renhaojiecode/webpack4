@@ -1,0 +1,113 @@
+记录一些知识点
+
+
+
+CommonJS AMD Module
+  http://javascript.ruanyifeng.com/nodejs/module.html
+  http://es6.ruanyifeng.com/#docs/module
+  CommonJS 规范 运用于node js 每个文件都是模块使用时加载 require 时会读取 module.exports 属性
+    所有代码都运行在模块作用域，不会污染全局作用域。
+    模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。
+    模块加载的顺序，按照其在代码中出现的顺序。
+
+    加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。由于Node.js主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式。
+    module {
+      id: 模块的识别符，通常是带有绝对路径的模块文件名。
+      filename: 模块的文件名，带有绝对路径。
+      loaded: 返回一个布尔值，表示模块是否已经完成加载。
+      parent: 返回一个对象，表示调用该模块的模块。
+      children: 返回一个数组，表示该模块要用到的其他模块。
+      exports 表示模块对外输出的值。
+    }
+    每个模块内部会直接写入 exports 对象等同于 var exports = module.exports;
+      (注意事项 不能直接对 exports 赋值；如果一个模块的对外接口，就是一个单一的值，不能使用exports输出，只能使用module.exports输出。)
+    require 读入并执行一个JavaScript文件，然后返回该模块的exports对象。如果没有发现指定模块，会报错。
+      对于对此require同一模块 不会重新加载 输出的是缓存 -> require.cache 
+      如果脚本/home/user/projects/foo.js执行了require('bar.js')命令，Node会依次搜索以下文件。
+        /usr/local/lib/node/bar.js
+        /home/user/projects/node_modules/bar.js
+        /home/user/node_modules/bar.js
+        /home/node_modules/bar.js
+        /node_modules/bar.js
+      这样设计的目的是，使得不同的模块可以将所依赖的模块本地化。
+  AMD 规范 运用于浏览器环境
+    AMD规范则是非同步加载模块，允许指定回调函数。
+    define 方法定义模块 也可以兼容 CommonJS 规范
+  Module 语法
+    ES6 模块的设计思想是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。CommonJS 和 AMD 模块，都只能在运行时确定这些东西。 export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
+    export
+      命令规定的是对外的接口 不能输出值或代表值的变量包括fn class 等.
+      语句输出的接口，与其对应的值是动态绑定关系，即通过该接口，可以取到模块内部实时的值。
+      export 可以位于模块任何位置 但必须在模块顶层  不能在块级作用域
+        let m = 1
+        export m  //报错
+        export { m }
+        export { m as ma}
+        export var m = 1;
+        function a() {}
+        export a  //报错
+    import
+      命令接受一对大括号，里面指定要从其他模块导入的变量名。大括号里面的变量名，必须与被导入模块对外接口的名称相同。或者使用as关键字。
+      命令输入的变量都是只读的，因为它的本质是输入接口。也就是说，不允许在加载模块的脚本里面，改写接口。
+      命令具有提升效果，会提升到整个模块的头部，首先执行。(命令是编译阶段执行的，在代码运行之前。)
+      命令是静态执行，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构。
+        //main.js
+        export let name = 'abc' 
+        import { name } from './main.js'
+        import { name as nameUSA } from './main.js'
+      语句会执行所加载的模块，因此可以有下面的写法。
+        import 'lodash'; //不输入任何信息 只执行模块
+      如果多次重复执行同一句import语句，那么只会执行一次，而不会执行多次。
+      整体加载，即用星号（*）指定一个对象
+        //circle.js
+        export function a(){}
+        export function b(){}
+        import * as circle from './circle';
+        circle.a()
+        circle.b()
+        circle.a = 5 //报错 不允许对输出接口改写
+    export default
+      输出的是一个变量不是一个接口，实质是把输出的值赋值给 default（输出变量、fn、class）
+      使用import命令的时候，用户需要知道所要加载的变量名或函数名，否则无法加载。但是，用户肯定希望快速上手，未必愿意阅读文档，去了解模块有哪些属性和方法。
+      为了给用户提供方便，让他们不用阅读文档就能加载模块，就要用到export default命令，为模块指定默认输出
+        // export-default.js
+        export default function () {
+          console.log('foo');
+        }
+        import customName from './export-default';
+        customName()
+
+      export default就是输出一个叫做default的变量或方法，然后系统允许你为它取任意名字。所以，下面的写法是有效的。
+        // modules.js
+        function add(x, y) {
+          return x * y;
+        }
+        export {add as default};
+        // 等同于
+        export default add;
+
+        // app.js
+        import { default as foo } from 'modules';
+        // 等同于
+        import foo from 'modules';
+      可以和import 同时使用
+        //lodash.js
+        export default function (obj) {}
+        export function each(obj, iterator, context) {}
+        export { each as forEach };
+        import _, { each, forEach } from 'lodash';
+    export 与 import 的复合写法
+      如果在一个模块之中，先输入后输出同一个模块，import语句可以与export语句写在一起。
+      但需要注意的是，写成一行以后，foo和bar实际上并没有被导入当前模块，只是相当于对外转发了这两个接口，导致当前模块不能直接使用foo和bar。
+        export { foo, bar } from 'my_module';
+        // 可以简单理解为
+        import { foo, bar } from 'my_module';
+        export { foo, bar };
+        // export default
+        export { default } from 'foo';
+
+
+
+Vue
+  style scoped  可以这样使作用于子组件
+  .a >>> .b { /* ... */ }
