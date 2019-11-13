@@ -1,0 +1,8 @@
+.cache
+.vscode
+.idea
+package-lock.json
+npm-debug.log
+
+/node_modules
+/dist

@@ -1,0 +1,18 @@
+这是因为，注入的 runtime 和 manifest 在每次构建后都会发生变化。
+
+script
+  rm -rf ./dist &&  或 clean-webpack-plugin 用来在编译之前清理编译生成的文件夹
+"cross-env": "^6.0.3",  可以在 script中全局化 NODE_ENV 的值 针对不同的命令差异化处理webpack config
+"css-loader": "^3.2.0", 将 CSS 转化成 CommonJS 模块
+"eslint": "^6.6.0", 检查js 代码语法
+"eslint-loader": "^3.0.2", 预处理 js等文件
+"eslint-plugin-vue": "^6.0.0", 针对vue文件检查语法等
+"html-webpack-plugin": "^3.2.0", 创建一个捆绑 js css 的html
+"mini-css-extract-plugin": "^0.8.0", 提取css文件创建单文件
+"style-loader": "^1.0.0", 将 JS 字符串生成为 style 节点 / 将模块的导出作为样式添加到 DOM 中
+"stylus": "^0.54.7",
+"stylus-loader": "^3.0.2",
+"webpack-cli": "^3.3.10"
+
+
+webpack-manifest-plugin  通过 WebpackManifestPlugin 插件，可以将 manifest 数据提取为一个容易使用的 json 文件。

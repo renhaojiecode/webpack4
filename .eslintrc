@@ -1,0 +1,48 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:vue/essential"
+    ],
+    "rules": {
+        "semi": ["error", "never"],
+        "indent": ["error", 2],
+        "quotes": ["error", "single", { "allowTemplateLiterals": true }],
+        "no-multiple-empty-lines": ["error", {"max": 1}],
+        "no-trailing-spaces": ["error"],
+        "no-empty-function": ["error"],
+        "no-whitespace-before-property": ["error"],
+        "space-before-function-paren": ["error", "never"],
+        "key-spacing": ["error", {"afterColon": true}],
+        "arrow-body-style": ["error", "always"],
+        "no-tabs": ["error"],
+        "no-param-reassign": ["error"],
+        "dot-location": ["error", "property"],
+        "no-return-assign": ["error"],
+        "brace-style": ["error", "1tbs", {"allowSingleLine": true}],
+        "no-multi-assign": "error",
+        "func-call-spacing": ["error"],
+        "space-before-blocks": ["error"],
+        "keyword-spacing": ["error"],
+        "arrow-spacing": ["error"],
+        "comma-spacing": ["error", {"after": true}],
+        "space-infix-ops": ["error"],
+        "space-unary-ops": ["error"],
+        "no-multi-spaces": ["error", {"ignoreEOLComments": true}],
+
+        "max-nested-callbacks": ["warn", 4],
+        "vars-on-top": ["error"],
+        "max-lines": ["warn", 1000],
+        "complexity": ["warn", 40],
+        "no-template-curly-in-string": ["warn"]
+    },
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true,
+        "node": true
+    }
+}
