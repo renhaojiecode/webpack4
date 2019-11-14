@@ -8,7 +8,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint './src/**/*.@(vue|js)'",
-    "build": "rm -rf ./dist && cross-env NODE_ENV=production webpack --config webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "dev": "cross-env NODE_ENV=development webpack --watch",
     "webpack": "cross-env NODE_ENV=development webpack-dev-server --progress",
     "server": "cross-env NODE_ENV=development node server.js"
