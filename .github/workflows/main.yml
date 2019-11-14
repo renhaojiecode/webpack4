@@ -10,12 +10,10 @@ jobs:
       matrix:
         node-version: [13.x]
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
     - name: Build and Deploy
       uses: JamesIves/github-pages-deploy-action@master
       env:
         ACCESS_TOKEN: 63eb967d7ac3b25e184b0a3c3b8e5054582a231c
-        BRANCH: gh-pages
-        FOLDER: build
+        BRANCH: master
+        FOLDER: dist
         BUILD_SCRIPT: npm install && npm run build
