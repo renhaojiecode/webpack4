@@ -9,21 +9,19 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint './src/**/*.@(vue|js)'",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
-    "dev": "cross-env NODE_ENV=development webpack --watch",
+    "dev": "cross-env NODE_ENV=development webpack --watch && webpack-dev-server --progress",
     "webpack": "cross-env NODE_ENV=development webpack-dev-server --progress",
     "server": "cross-env NODE_ENV=development node server.js"
   },
   "dependencies": {
-    "webpack": "^4.41.2"
-  },
-  "devDependencies": {
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-manifest-plugin": "^2.2.0",
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.2.0",
-    "eslint": "^6.6.0",
-    "eslint-loader": "^3.0.2",
-    "eslint-plugin-vue": "^6.0.0",
-    "express": "^4.17.1",
     "file-loader": "^4.2.0",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
@@ -32,9 +30,12 @@
     "pug-loader": "^2.4.0",
     "style-loader": "^1.0.0",
     "stylus": "^0.54.7",
-    "stylus-loader": "^3.0.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0",
-    "webpack-manifest-plugin": "^2.2.0"
+    "stylus-loader": "^3.0.2"
+  },
+  "devDependencies": {
+    "express": "^4.17.1",
+    "eslint": "^6.6.0",
+    "eslint-loader": "^3.0.2",
+    "eslint-plugin-vue": "^6.0.0"
   }
 }

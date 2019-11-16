@@ -11,7 +11,7 @@ const port = 2019
 app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
 }))
-
+app.use(require('webpack-hot-middleware')(compiler)) //启用HMR
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!\n`)
 })

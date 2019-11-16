@@ -19,7 +19,6 @@ module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     home: './src/home/index.js',
-    print: './src/print.js'
   },
   output: {
     filename: '[name]/bundle.js',
@@ -70,7 +69,8 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          // MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader'
         ]
       },
@@ -128,6 +128,7 @@ module.exports = {
       filename: 'home/base.html',
       favicon: './5th-two.png'
     }),
+    new webpack.HotModuleReplacementPlugin(), //dev环境 启用HMR module.hot
     new MiniCssExtractPlugin({
       filename: "[name]/style-[contenthash:18].css",
       // chunkFilename: devMode ? '[id].css' : '[id].[contenthash:18].css',
