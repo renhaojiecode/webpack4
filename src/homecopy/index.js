@@ -1,7 +1,8 @@
-import './index.styl'
 import './style.css'
+import './index.styl'
 import icon from './img/5th-two.png'
 import printMe from '../print.js'
+
 function component() {
   let oDiv = document.createElement('div')
   oDiv.innerHTML = 'Hello, webpack'
@@ -10,7 +11,7 @@ function component() {
   oImg.src = icon
   oDiv.appendChild(oImg)
   let btn = document.createElement('button')
-  btn.innerHTML = '点击查看c飒飒onsolesajsajsj'
+  btn.innerHTML = '点击查看consolesajsajsj'
   btn.style.color = 'red'
   btn.onclick = printMe
   oDiv.appendChild(btn)
