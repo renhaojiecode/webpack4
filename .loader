@@ -24,7 +24,7 @@ script
 webpack-manifest-plugin  通过 webpack-manifest-plugin 插件，可以将 manifest 数据提取为一个容易使用的 json 文件。
 optimization: { //这几个配置可以优化编译速度、防止没有关联的文件被编译
     namedModules: true,
-    runtimeChunk: 'single',
+    //runtimeChunk: 'single',
     namedChunks: true, // 防止chunk id 根据自增而改变
 }
 
@@ -32,3 +32,9 @@ optimization: { //这几个配置可以优化编译速度、防止没有关联�
 disableHostCheck: true, // 绕过主机 host 检查   可以使用本地hosts配置域名
 // useLocalIp: true, // 允许使用本地ip  未成功原因不明
 writeToDisk: true, // 将文件写入磁盘
+
+home/style-7b1f641b25066c9852.css home/bundle-af00f4caecb934b43e.js
+homecopy/style-1970772c129706fa49.css homecopy/bundle-df46567ce1c61fb93f.js
+
+home/style-d0940f18a800479e82.css home/bundle-0f0db766bb1cb73002.js
+homecopy = homecopy/style-a929d101012f11784d.css homecopy/bundle-d1a514c0c3434765a3.js

@@ -1,7 +1,8 @@
 import './index.styl'
 import './style.css'
 import icon from './img/5th-two.png'
-import printMe from '../print.js'
+import {printMe} from '../print.js'
+
 function component() {
   let oDiv = document.createElement('div')
   oDiv.innerHTML = 'Hello, webpack'
@@ -23,12 +24,11 @@ import axios from 'axios'
 axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
   console.log(res)
 })
-
-if (module.hot) {
-  module.hot.accept('../print.js', function() {
-    console.log('Accepting the updated printMe module!')
-    document.body.removeChild(element)
-    element = component() // 重新渲染 "component"，以便更新 click 事件处理函数
-    document.body.appendChild(element)
-  })
-}
+// if (module.hot) {
+//   module.hot.accept('../print.js', function() {
+//     console.log('Accepting the updated printMe module!')
+//     document.body.removeChild(element)
+//     element = component() // 重新渲染 "component"，以便更新 click 事件处理函数
+//     document.body.appendChild(element)
+//   })
+// }

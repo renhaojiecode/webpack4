@@ -10,7 +10,8 @@ const port = 2019
 // 告诉 express 使用 webpack-dev-middleware，
 // 以及将 webpack.config.js 配置文件作为基础配置
 app.use(webpackDevMiddleware(compiler, {
-  publicPath: config.output.publicPath
+  publicPath: config.output.publicPath,
+  writeToDisk: true, // 将文件写入磁盘
 }))
 app.use(require('webpack-hot-middleware')(compiler)) //启用HMR
 app.listen(port, () => {

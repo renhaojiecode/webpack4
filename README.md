@@ -1,4 +1,6 @@
 ###webpack config 学习
+node v13.1.0
+npm v6.12.1
 webpack-dev-server 不能使用本地hosts 域名的问题  通过 disableHostCheck 选项解决 这种做法不太安全
 目标
   github  actions ci 打通

@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 
 const devMode = process.env.NODE_ENV !== 'production'
 function recursiveIssuer(m) {
@@ -24,7 +25,8 @@ const webpackConfig = {
     print: './src/print.js',
   },
   output: {
-    filename: '[name]/bundle-[contenthash:18].js', // devMode ? '[name]/bundle-[hash:18].js' : 
+    filename: '[name]/bundle-[chunkhash:18].js', // devMode ? '[name]/bundle.js' : 
+    chunkFilename: '[name]/bundle-[chunkhash:18].js',
     path: path.resolve(__dirname, './dist'),
     sourceMapFilename: '[file].map',
     publicPath: '/'
@@ -35,9 +37,10 @@ const webpackConfig = {
     compress: true, // 一切都启用 gzip压缩
     writeToDisk: true, // 将文件写入磁盘
     publicPath: '/',
-    port: 8018,
-    //hot: true, // 模块热替换HotModuleReplacementPlugin 不能使用chunkhash 和 contenthash
-    disableHostCheck: true, // 绕过主机 host 检查
+    port: 8020,
+    // hot: true, // 模块热替换HotModuleReplacementPlugin 不能使用chunkhash 和 contenthash
+    // host: '0.0.0.0',
+    disableHostCheck: true, // 绕过主机 host 检查 不知道为什么今天不行了
     // useLocalIp: true, // 允许使用本地ip  未成功原因不明
     proxy: {
       '/rest/parentrest': {
@@ -52,9 +55,23 @@ const webpackConfig = {
     }
   },
   optimization: {
-    namedModules: true,
-    runtimeChunk: 'single',
+    minimize: true, //压缩bundle文件
+    // runtimeChunk: 'single',
     namedChunks: true, // 防止chunk id 根据自增而改变
+    minimizer: [
+      new OptimizeCssAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessorOptions: {
+          safe: true,
+          autoprefixer: { disable: true }, //禁用掉cssnano对于浏览器前缀的
+          mergeLonghand: false,
+          discardComments: {
+            removeAll: true // 移除注释
+          }
+        },
+        canPrint: true
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         homeStyles: {
@@ -84,6 +101,7 @@ const webpackConfig = {
       },
       {
         test: /\.css$/,
+        sideEffects: true, //有副作用代码 避免引入被删除
         use: [
           MiniCssExtractPlugin.loader,
           // 'style-loader',
@@ -92,6 +110,7 @@ const webpackConfig = {
       },
       {
         test: /\.styl$/,
+        sideEffects: true,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
@@ -128,9 +147,8 @@ const webpackConfig = {
   plugins: [],
 };
 const plugins = [
-  new ManifestPlugin(),
-  new webpack.ProgressPlugin(), // 报告编译进度
   new CleanWebpackPlugin(), // 清理ouput文件夹
+  new webpack.ProgressPlugin(), // 报告编译进度
   new HtmlWebpackPlugin({
     // minify: { // 压缩HTML文件
     //   removeComments: true, // 移除HTML中的注释
@@ -156,7 +174,7 @@ const plugins = [
   }),
   new MiniCssExtractPlugin({
     filename: "[name]/style-[contenthash:18].css",
-    // chunkFilename: devMode ? '[id].css' : '[id].[contenthash:18].css',
+    chunkFilename: '[name]/style-[contenthash:18].css',
   }),
   new webpack.ProvidePlugin({
     // 自动引入Vue
@@ -165,6 +183,7 @@ const plugins = [
   new webpack.DefinePlugin({ //全局变量
     'process.env.NODE_ENV':  JSON.stringify(process.env.NODE_ENV)
   }),
+  new ManifestPlugin(),
 ]
 // devMode && plugins.push(
 //   new webpack.HotModuleReplacementPlugin(), //dev环境 启用HMR module.hot
