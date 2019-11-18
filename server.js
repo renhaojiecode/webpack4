@@ -4,7 +4,7 @@ const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const colors = require('colors')
 const app = express()
-const config = require('./webpack.config.js')
+const config = require('./webpack.dev.js')
 const compiler = webpack(config)
 const port = 2019
 // 告诉 express 使用 webpack-dev-middleware，

@@ -1,5 +1,5 @@
 这是因为，注入的 runtime 和 manifest 在每次构建后都会发生变化。
-
+eslint  报正则问题时  node版本有问题
 script
   rm -rf ./dist &&  或 clean-webpack-plugin 用来在编译之前清理编译生成的文件夹
   node server.js

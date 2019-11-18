@@ -1,7 +1,7 @@
 import './index.styl'
 import './style.css'
 import icon from './img/5th-two.png'
-import {printMe} from '../print.js'
+import { printMe } from '../components/print.js'
 
 function component() {
   let oDiv = document.createElement('div')
@@ -24,6 +24,16 @@ import axios from 'axios'
 axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
   console.log(res)
 })
+// function getModule() {
+//   return import(/* webpackChunkName: "lodash" */ 'axios').then((axios) => {
+//     axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
+//       console.log(res)
+//     })
+//   }).catch((err) => {
+//     console.log('这是一个错误', err)
+//   })
+// }
+// getModule()
 // if (module.hot) {
 //   module.hot.accept('../print.js', function() {
 //     console.log('Accepting the updated printMe module!')

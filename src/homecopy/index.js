@@ -1,7 +1,7 @@
 import './style.css'
 import './index.styl'
 import icon from './img/5th-two.png'
-// import printMe from '../print.js'
+import { printMe } from '../components/print.js'
 
 function component() {
   let oDiv = document.createElement('div')
@@ -13,17 +13,17 @@ function component() {
   let btn = document.createElement('button')
   btn.innerHTML = '点击查看consolesajsajsj'
   btn.style.color = 'red'
-  // btn.onclick = printMe
+  btn.onclick = printMe
   oDiv.appendChild(btn)
   return oDiv
 }
 let element = component()
 document.body.appendChild(element)
 
-import axios from 'axios'
-axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
-  console.log(res)
-})
+// import axios from 'axios'
+// axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
+//   console.log(res)
+// })
 
 // if (module.hot) {
 //   module.hot.accept('../print.js', function() {
