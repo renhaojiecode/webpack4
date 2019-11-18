@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const TerserJSPlugin = require("terser-webpack-plugin");
-const devMode = process.env.NODE_ENV !== 'production'
+const devMode = process.env.NODE_ENV !== 'production';
 module.exports = {
   entry: {
     home: './src/home/index.js',
@@ -25,44 +25,6 @@ module.exports = {
       components: path.resolve(__dirname, './src/components/')
     }
   },
-  // optimization: {
-    // minimizer: [ 
-    //   // devMode ? new TerserJSPlugin() : '', //压缩js代码
-    //   new OptimizeCssAssetsPlugin({
-    //     assetNameRegExp: /\.css$/g,
-    //     cssProcessorOptions: {
-    //       safe: true,
-    //       autoprefixer: { disable: true }, //禁用掉cssnano对于浏览器前缀的
-    //       mergeLonghand: false,
-    //       discardComments: {
-    //         removeAll: true // 移除注释
-    //       }
-    //     },
-    //     canPrint: true
-    //   }),
-    // ],
-    // splitChunks: {
-    //   chunks: 'async',
-    //   minSize: 30000,
-    //   maxSize: 0,
-    //   minChunks: 1,
-    //   maxAsyncRequests: 5,
-    //   maxInitialRequests: 3,
-    //   automaticNameDelimiter: '~',
-    //   name: true,
-    //   cacheGroups: {
-    //     vendors: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       priority: -10
-    //     },
-    //     default: {
-    //       minChunks: 2,
-    //       priority: -20,
-    //       reuseExistingChunk: true
-    //     }
-    //   }
-    // }
-  // },
   module: {
     rules: [
       {
@@ -216,5 +178,43 @@ module.exports = {
     new webpack.DefinePlugin({ //全局变量
       'process.env.NODE_ENV':  JSON.stringify(process.env.NODE_ENV)
     }),
-  ]
+  ],
+  // optimization: {
+    // minimizer: [ 
+    //   // devMode ? new TerserJSPlugin() : '', //压缩js代码
+    //   new OptimizeCssAssetsPlugin({
+    //     assetNameRegExp: /\.css$/g,
+    //     cssProcessorOptions: {
+    //       safe: true,
+    //       autoprefixer: { disable: true }, //禁用掉cssnano对于浏览器前缀的
+    //       mergeLonghand: false,
+    //       discardComments: {
+    //         removeAll: true // 移除注释
+    //       }
+    //     },
+    //     canPrint: true
+    //   }),
+    // ],
+    // splitChunks: {
+    //   chunks: 'async',
+    //   minSize: 30000,
+    //   maxSize: 0,
+    //   minChunks: 1,
+    //   maxAsyncRequests: 5,
+    //   maxInitialRequests: 3,
+    //   automaticNameDelimiter: '~',
+    //   name: true,
+    //   cacheGroups: {
+    //     vendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       priority: -10
+    //     },
+    //     default: {
+    //       minChunks: 2,
+    //       priority: -20,
+    //       reuseExistingChunk: true
+    //     }
+    //   }
+    // }
+  // },
 }

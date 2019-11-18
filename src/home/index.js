@@ -11,12 +11,13 @@ function component() {
   oImg.src = icon
   oDiv.appendChild(oImg)
   let btn = document.createElement('button')
-  btn.innerHTML = '点击查看c飒飒onsolesajsajsj'
+  btn.innerHTML = '点击查看c飒飒onsolesa飒飒jsajsj'
   btn.style.color = 'red'
   btn.onclick = printMe
   oDiv.appendChild(btn)
   return oDiv
 }
+
 let element = component()
 document.body.appendChild(element)
 

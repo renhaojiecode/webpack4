@@ -8,7 +8,7 @@ const config = require('./webpack.dev.js')
 const compiler = webpack(config)
 const port = 2019
 // 告诉 express 使用 webpack-dev-middleware，
-// 以及将 webpack.config.js 配置文件作为基础配置
+// 以及将 webpack.dev.js 配置文件作为基础配置
 app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   writeToDisk: true, // 将文件写入磁盘
@@ -27,9 +27,9 @@ function proxyDebuger(host) {
 }
 const GATEWAY = {
   parentrest: {
-    http: 'http://renhaojie.vipkid.com.cn:8077/rest/parentrest/',
+    http: 'http://renhaojie.vipkid.com.cn:8077',
     proxy: '/rest/parentrest/',
-    path: '/rest/parentrest/'
+    path: '/rest/parentrest'
   }
 }
 app.use((req, res, next) => {
