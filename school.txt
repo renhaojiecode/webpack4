@@ -105,3 +105,9 @@ CommonJS AMD Module
         export { foo, bar };
         // export default
         export { default } from 'foo';
+
+
+
+Vue
+  style scoped  可以这样使作用于子组件
+  .a >>> .b { /* ... */ }

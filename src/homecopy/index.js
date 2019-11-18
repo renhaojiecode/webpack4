@@ -1,5 +1,5 @@
-import './index.styl'
 import './style.css'
+import './index.styl'
 import icon from './img/5th-two.png'
 import { printMe } from '../components/print.js'
 
@@ -11,30 +11,20 @@ function component() {
   oImg.src = icon
   oDiv.appendChild(oImg)
   let btn = document.createElement('button')
-  btn.innerHTML = '点击查看c飒飒onsolesa飒飒jsajsj'
+  btn.innerHTML = '点击查看consolesajsajsj'
   btn.style.color = 'red'
   btn.onclick = printMe
   oDiv.appendChild(btn)
   return oDiv
 }
-
 let element = component()
 document.body.appendChild(element)
 
-import axios from 'axios'
-axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
-  console.log(res)
-})
-// function getModule() {
-//   return import(/* webpackChunkName: "lodash" */ 'axios').then((axios) => {
-//     axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
-//       console.log(res)
-//     })
-//   }).catch((err) => {
-//     console.log('这是一个错误', err)
-//   })
-// }
-// getModule()
+// import axios from 'axios'
+// axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
+//   console.log(res)
+// })
+
 // if (module.hot) {
 //   module.hot.accept('../print.js', function() {
 //     console.log('Accepting the updated printMe module!')
