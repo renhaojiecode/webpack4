@@ -7,6 +7,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const TerserJSPlugin = require("terser-webpack-plugin");
 const devMode = process.env.NODE_ENV !== 'production';
+
 module.exports = {
   entry: {
     home: './src/home/index.js',

@@ -11,5 +11,37 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
+        node-version: 13.1.0
         repo-token: ${{ secrets.ACCESS_TOKEN }}
     - run: npm install && npm run build
+    # - name: deploy
+    #   run: |
+    #     git config --global user.name "renhaojiecode"
+    #     git config --global user.email "1016510857@qq.com"
+    #     git remote add appren https://github.com/renhaojiecode/appren.git
+    #     mv .loader .mark
+    #     git add .
+    #     git commit -m "CI built at `date +"%Y-%m-%d %H:%M:%S"`"
+    #     git push -u -f appren master
+  # deploy:
+  #   steps:
+  #   - name: start deployment
+  #     uses: bobheadxi/deployments@master
+  #     id: deployment
+  #     with:
+  #       step: start
+  #       token: ${{ secrets.ACCESS_TOKEN }}
+  #       env: release
+
+  #   - name: do my deploy
+  #     # ...
+
+  #   - name: update deployment status
+  #     uses: bobheadxi/deployments@master
+  #     if: always()
+  #     with:
+  #       step: finish
+  #       token: ${{ secrets.ACCESS_TOKEN }}
+  #       env: ${{ steps.deployment.outputs.env }}
+  #       status: ${{ job.status }}
+  #       deployment_id: ${{ steps.deployment.outputs.deployment_id }}
