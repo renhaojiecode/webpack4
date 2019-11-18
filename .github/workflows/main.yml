@@ -11,5 +11,5 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
       with:
-        repo-token: 63eb967d7ac3b25e184b0a3c3b8e5054582a231c
+        repo-token: ${{ secrets.ACCESS_TOKEN }}
     - run: npm install && npm run build
