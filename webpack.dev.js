@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 function recursiveIssuer(m) {
   if (m.issuer) {
@@ -31,6 +32,9 @@ module.exports = merge(common, {
       }
     },
   },
+  plugins: [
+    // new BundleAnalyzerPlugin(),
+  ],
   optimization: {
     minimize: true, //压缩bundle文件
     // runtimeChunk: 'single',

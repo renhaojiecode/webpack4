@@ -125,6 +125,18 @@ module.exports = {
         ]
       },
       {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            }
+          }
+        ]
+      },
+      {
         enforce: 'pre', // 只对源文件检查 不用担心 babel-loader 等的修改
         test: /\.(js|vue)$/,
         exclude: /node_modules/,
@@ -150,25 +162,25 @@ module.exports = {
       // },
       template: './src/home/index.pug',
       filename: 'home/index.html',
-      chunks: ['home'], // 该插件默认把所有入口文件全部引入html 所以限定引入模块
+      chunks: ['home', 'commons'], // 该插件默认把所有入口文件全部引入html 所以限定引入模块
       favicon: './5th-two.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/home/base.html',
       filename: 'home/base.html',
-      chunks: ['home'],
+      chunks: ['home', 'commons'],
       favicon: './5th-two.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/homecopy/index.html',
       filename: 'homecopy/index.html',
-      chunks: ['homecopy'],
+      chunks: ['homecopy', 'commons'],
       favicon: './5th-two.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/vuerouter/index.html',
       filename: 'vuerouter/index.html',
-      chunks: ['vuerouter'],
+      chunks: ['vuerouter', 'commons'],
       favicon: './5th-two.png'
     }),
     new MiniCssExtractPlugin({
@@ -180,7 +192,7 @@ module.exports = {
       'process.env.NODE_ENV':  JSON.stringify(process.env.NODE_ENV)
     }),
   ],
-  // optimization: {
+  optimization: {
     // minimizer: [ 
     //   // devMode ? new TerserJSPlugin() : '', //压缩js代码
     //   new OptimizeCssAssetsPlugin({
@@ -196,26 +208,32 @@ module.exports = {
     //     canPrint: true
     //   }),
     // ],
-    // splitChunks: {
-    //   chunks: 'async',
-    //   minSize: 30000,
-    //   maxSize: 0,
-    //   minChunks: 1,
-    //   maxAsyncRequests: 5,
-    //   maxInitialRequests: 3,
-    //   automaticNameDelimiter: '~',
-    //   name: true,
-    //   cacheGroups: {
-    //     vendors: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       priority: -10
-    //     },
-    //     default: {
-    //       minChunks: 2,
-    //       priority: -20,
-    //       reuseExistingChunk: true
-    //     }
-    //   }
-    // }
-  // },
+    splitChunks: {
+      // chunks: 'async',
+      // minSize: 30000,
+      // maxSize: 0,
+      // minChunks: 1,
+      // maxAsyncRequests: 5,
+      // maxInitialRequests: 3,
+      // automaticNameDelimiter: '~',
+      // name: true,
+      cacheGroups: {
+        commons: {
+          name: 'commons',
+          chunks: "initial",  //入口处开始提取代码
+          minSize: 0,      //代码最小多大，进行抽离
+          minChunks: 2,
+        },
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: 1
+        },
+        // default: {
+        //   minChunks: 2,
+        //   priority: -20,
+        //   reuseExistingChunk: true
+        // }
+      }
+    }
+  },
 }

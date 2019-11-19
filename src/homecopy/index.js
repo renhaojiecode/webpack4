@@ -19,6 +19,13 @@ function component() {
 }
 let element = component()
 document.body.appendChild(element)
+setTimeout(() => {
+  assign()
+}, 100)
+function assign() {
+  let a = {b: 567}
+  Object.assign(a, {c: 789})
+}
 
 // import axios from 'axios'
 // axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
