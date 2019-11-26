@@ -16,6 +16,7 @@
 
 <script>
 import calendar from './calendar2.0.vue'
+import data from './calendar.js'
 export default {
   components: {
     calendar
@@ -25,11 +26,14 @@ export default {
       isOnLoaded: true,
       timeSlotSlider: [],
       active: 0,
-      maxActive: 0,
+      maxActive: 2,
       minActive: 0,
-      calendarH: 60,
+      calendarH: 500,
       guideCalendar: 0,
     }
+  },
+  mounted() {
+    this.timeSlotSlider = data
   },
   methods: {
     selectTime() {
@@ -39,8 +43,9 @@ export default {
 }
 </script>
 <style lang="stylus" scoped>
-  .home-wrapper
-    background: #999999
+.home-wrapper
+  height: 100%
+  background: #999999
 </style>
 <style module>
 .black {

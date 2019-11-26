@@ -7,6 +7,7 @@ webpack-dev-server 不能使用本地hosts 域名的问题  通过 disableHostCh
   接入vue *
   实现单页面 vue-router *
   webpack-dev-server 编译文件在内存中 不能再磁盘看见的问题 * writeToDisk
+  babel babel-polyfill 接入 *
   实现多页面
   pug 文件编译后 图片等资源地址问题
   接入 简单的单元测试 vue-test-util

@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 // const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const TerserJSPlugin = require("terser-webpack-plugin");
 const devMode = process.env.NODE_ENV !== 'production';
@@ -140,6 +141,7 @@ module.exports = {
         enforce: 'pre', // 只对源文件检查 不用担心 babel-loader 等的修改
         test: /\.(js|vue)$/,
         exclude: /node_modules/,
+        include: /src/,
         use: [
           {
             loader: 'eslint-loader',
@@ -154,6 +156,10 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(), // 清理ouput文件夹
     new webpack.ProgressPlugin(), // 报告编译进度
+    // new webpack.DllReferencePlugin({
+    //   context: __dirname,
+    //   manifest: require("./dll/manifest.json"),
+    // }),
     new HtmlWebpackPlugin({
       // minify: { // 压缩HTML文件
       //   removeComments: true, // 移除HTML中的注释
@@ -162,26 +168,29 @@ module.exports = {
       // },
       template: './src/home/index.pug',
       filename: 'home/index.html',
-      chunks: ['home', 'commons'], // 该插件默认把所有入口文件全部引入html 所以限定引入模块
+      chunks: ['home'], // 该插件默认把所有入口文件全部引入html 所以限定引入模块
       favicon: './5th-two.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/home/base.html',
       filename: 'home/base.html',
-      chunks: ['home', 'commons'],
+      chunks: ['home'],
       favicon: './5th-two.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/homecopy/index.html',
       filename: 'homecopy/index.html',
-      chunks: ['homecopy', 'commons'],
+      chunks: ['homecopy'],
       favicon: './5th-two.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/vuerouter/index.html',
       filename: 'vuerouter/index.html',
-      chunks: ['vuerouter', 'commons'],
+      chunks: ['vuerouter'],
       favicon: './5th-two.png'
+    }),
+    new AddAssetHtmlPlugin({
+      filepath: require.resolve('./dll/dllvendor.dll.js'),
     }),
     new MiniCssExtractPlugin({
       filename: "[name]/style-[contenthash:18].css",
@@ -208,7 +217,7 @@ module.exports = {
     //     canPrint: true
     //   }),
     // ],
-    splitChunks: {
+    // splitChunks: {
       // chunks: 'async',
       // minSize: 30000,
       // maxSize: 0,
@@ -217,23 +226,23 @@ module.exports = {
       // maxInitialRequests: 3,
       // automaticNameDelimiter: '~',
       // name: true,
-      cacheGroups: {
-        commons: {
-          name: 'commons',
-          chunks: "initial",  //入口处开始提取代码
-          minSize: 0,      //代码最小多大，进行抽离
-          minChunks: 2,
-        },
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: 1
-        },
-        // default: {
-        //   minChunks: 2,
-        //   priority: -20,
-        //   reuseExistingChunk: true
-        // }
-      }
-    }
+    //   cacheGroups: {
+    //     commons: {
+    //       name: 'commons',
+    //       chunks: "initial",  //入口处开始提取代码
+    //       minSize: 0,      //代码最小多大，进行抽离
+    //       minChunks: 2,
+    //     },
+    //     vendors: {
+    //       test: /[\\/]node_modules[\\/]/,
+    //       priority: 1
+    //     },
+    //     // default: {
+    //     //   minChunks: 2,
+    //     //   priority: -20,
+    //     //   reuseExistingChunk: true
+    //     // }
+    //   }
+    // }
   },
 }
