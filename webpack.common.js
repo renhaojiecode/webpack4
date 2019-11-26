@@ -14,6 +14,7 @@ module.exports = {
     home: './src/home/index.js',
     homecopy: './src/homecopy/index.js',
     vuerouter: './src/vuerouter/index.js',
+    interview: './src/interview/index.js',
   },
   output: {
     filename: '[name]/bundle-[chunkhash:18].js',
@@ -169,25 +170,31 @@ module.exports = {
       template: './src/home/index.pug',
       filename: 'home/index.html',
       chunks: ['home'], // 该插件默认把所有入口文件全部引入html 所以限定引入模块
-      favicon: './5th-two.png'
+      favicon: './favicon.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/home/base.html',
       filename: 'home/base.html',
       chunks: ['home'],
-      favicon: './5th-two.png'
+      favicon: './favicon.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/homecopy/index.html',
       filename: 'homecopy/index.html',
       chunks: ['homecopy'],
-      favicon: './5th-two.png'
+      favicon: './favicon.png'
     }),
     new HtmlWebpackPlugin({
       template: './src/vuerouter/index.html',
       filename: 'vuerouter/index.html',
       chunks: ['vuerouter'],
-      favicon: './5th-two.png'
+      favicon: './favicon.png'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/interview/index.html',
+      filename: 'interview/index.html',
+      chunks: ['interview'],
+      favicon: './favicon.png'
     }),
     new AddAssetHtmlPlugin({
       filepath: require.resolve('./dll/dllvendor.dll.js'),

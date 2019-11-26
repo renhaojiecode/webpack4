@@ -27,6 +27,28 @@ function assign() {
   Object.assign(a, {c: 789})
 }
 
+function addTwoNumbers(l1, l2) {
+  let l1Ln = l1.length
+  let l2Ln = l2.length
+  let ln = l1Ln > l2Ln ? l1Ln : l2Ln
+  let n = 0
+  let arr = []
+  let pro = 0
+  while (n < ln) {
+    let num = pro + (n < l1Ln ? l1[n] : 0) + (n < l2Ln ? l2[n] : 0)
+    pro = 0
+    if (num >= 10) {
+      pro = Math.floor(num / 10)
+      num = num % 10
+    }
+    arr[n] = num
+    n++
+  }
+  pro > 0 && (arr[n] = pro)
+  return arr
+}
+console.log(addTwoNumbers([2, 4, 3, 6], [5, 6, 4]))
+
 // import axios from 'axios'
 // axios.get('/rest/parentrest/api/system/dateTime/mobile').then(res => {
 //   console.log(res)

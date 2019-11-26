@@ -129,18 +129,8 @@ export default {
       arrMonthDate: [],
       // addShowArr: null,
       leftTimeW: 38,
-      majorCourseIdArr: [
-        5102, //VIPKID主修课程
-        597816, //新版VIPKID主修课程
-        597830, //ESL
-        597839, //Major_Escalate
-      ],
-      openCourseIdArr: [
-        597806, //免费公开课
-        597811, //精品公开课
-        597836, // 互动课堂
-        597851, // 互动课堂
-      ],
+      majorCourseIdArr: [],
+      openCourseIdArr: [],
 
       deltaX: 0,
       ticking: false,
