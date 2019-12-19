@@ -47,6 +47,8 @@ function addTwoNumbers(l1, l2) {
   pro > 0 && (arr[n] = pro)
   return arr
 }
+
+console.log(addTwoNumbers([2, 4, 3, 6], [5, 6, 4]))
 console.log(addTwoNumbers([2, 4, 3, 6], [5, 6, 4]))
 
 // import axios from 'axios'

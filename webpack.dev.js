@@ -14,6 +14,11 @@ function recursiveIssuer(m) {
 }
 module.exports = merge(common, {
   mode: 'development',
+  output: {
+    filename: '[name]/index.js',
+    path: path.resolve(__dirname, './dist'),
+    publicPath: '/'
+  },
   devtool: 'inline-source-map',
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
@@ -36,7 +41,7 @@ module.exports = merge(common, {
     // new BundleAnalyzerPlugin(),
   ],
   optimization: {
-    minimize: true, //压缩bundle文件
+    minimize: false, //压缩bundle文件
     // runtimeChunk: 'single',
     namedChunks: true, // 防止chunk id 根据自增而改变
     // splitChunks: {
