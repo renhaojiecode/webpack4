@@ -5,49 +5,54 @@
  * 3.x 为promise对象时的表现是否正确
  */
 let consoleOk = false
-function MyPromise(executor) {
+let id = 100
+function MyPromise(executor, status = false, thenable = false) {
   if (!executor || typeof executor !== 'function') {
     throw 'TypeError: Promise resolver undefined is not a function'
   }
+  this.freename = id
+  id++
   this.status = 'pending' // pending fuilfilled rejected
   this.value = undefined
   this.reason = undefined
-  this.thenOutputStatus = false // 代表是否是用户then函数的输出 涉及到reject状态的output是否校验的问题
+  this.isThenAble = thenable // 是否是thenable对象在执行
+  this.thenOutputStatus = status // 代表是否是用户then函数的输出 涉及到reject状态的output是否校验的问题
   this.onFulfilledArr = []
   this.onRejectedArr = []
   let n = 0
   try {
-    executor((x) => {
-      if (n) return
-      n++
-      setTimeout(() => {
+    this.microTask(function() {
+      executor((x) => {
+        if (n) return
+        n++
         outputCorrecting.call(this, x, null)
-      }, 0)
-      // resolvePromise
-    }, (e) => {
-      if (n) return
-      n++
-      setTimeout(() => {
+        // resolvePromise
+      }, (e) => {
+        if (n) return
+        n++
         if (this.thenOutputStatus) {
           rejectPromise.call(this, e)
         } else {
           outputCorrecting.call(this, e, null)
         }
-      }, 0)
-    })
+      })
+    }, this.isThenAble)
   } catch (e) {
-    !n && setTimeout(() => {
-      rejectPromise.call(this, e)
-    }, 0)
+    !n && rejectPromise.call(this, e)
   }
 }
+
 function resolvePromise(x) {
-  consoleOk && console.log('attr resolve', this.status)
-  asyncFn.call(this, 'fuilfilled', x)
+  this.microTask(function() {
+    consoleOk && console.log('attr resolve', this.status)
+    asyncFn.call(this, 'fuilfilled', x)
+  }, !this.isThenAble)
 }
 function rejectPromise(e) {
-  // console.log('attr reject')
-  asyncFn.call(this, 'rejected', e)
+  this.microTask(function() {
+    // console.log('attr reject')
+    asyncFn.call(this, 'rejected', e)
+  }, !this.isThenAble)
 }
 function asyncFn(type, x) {
   let _this = this
@@ -73,6 +78,7 @@ function asyncFn(type, x) {
     for (let i = 0; i < len; i++) {
       try {
         outputCorrecting.call(_this, output, arr[i])
+        //arg[3] 代表是then 队列在执行
       } catch (e) {
         arr[i].reject(e)
         return
@@ -81,17 +87,25 @@ function asyncFn(type, x) {
     _this.onFulfilledArr = []
   }
 }
+function rejectOutputFn(x, thenFnObj) {
+  let fn = undefined
+  try {
+    if (thenFnObj.thenArgFn) {
+      let output = (fn = thenFnObj.thenArgFn)(x)
+      thenFnObj.resolve(output)
+    } else {
+      thenFnObj.reject(x)
+    }
+  } catch (e) {
+    thenFnObj.reject(e)
+  }
+  return fn
+}
 function outputCorrecting(x, thenFnObj) {
-  // console.log('outputCorrecting', x)
   let _this = this
   let fn = undefined
   if (_this.status === 'rejected') {
-    try {
-      let output = thenFnObj.thenArgFn ? (fn = thenFnObj.thenArgFn)(x) : x
-      thenFnObj.resolve(output)
-    } catch (e) {
-      thenFnObj.reject(e)
-    }
+    rejectOutputFn(x, thenFnObj)
     return
   }
   if (x === MyPromise) {
@@ -145,37 +159,40 @@ function outputCorrecting(x, thenFnObj) {
       }
       return
     }
-    new MyPromise((resolve, reject) => {
-      let n = 0
-      try {
-        bindThen((res) => {
-          if (n) return
-          n++
-          resolve(res)
-        }, (e) => {
-          if (n) return
-          n++
-          reject(e)
-        })
-      } catch (e) {
-        if (!n) {
-          reject(e)
+    let thenableLoad = function() {
+      new MyPromise((resolve, reject) => {
+        let n = 0
+        try {
+          bindThen((res) => {
+            if (n) return
+            n++
+            resolve(res)
+          }, (e) => {
+            if (n) return
+            n++
+            reject(e)
+          })
+        } catch (e) {
+          if (!n) {
+            reject(e)
+          }
         }
-      }
-    }).setThenOutputStatus().then((res) => {
-      if (thenFnObj) {
-        let output = thenFnObj.thenArgFn ? (fn = thenFnObj.thenArgFn)(res) : res
-        thenFnObj.resolve(output)
-      } else {
-        resolvePromise.call(_this, res)
-      }
-    }).catch(e => {
-      if (thenFnObj) {
-        thenFnObj.reject(e)
-      } else {
-        rejectPromise.call(_this, e)
-      }
-    })
+      }, true, true).then((res) => {
+        if (thenFnObj) {
+          let output = thenFnObj.thenArgFn ? (fn = thenFnObj.thenArgFn)(res) : res
+          thenFnObj.resolve(output)
+        } else {
+          resolvePromise.call(_this, res)
+        }
+      }, (e) => {
+        if (thenFnObj) {
+          thenFnObj.reject(e)
+        } else {
+          rejectPromise.call(_this, e)
+        }
+      })
+    }
+    thenableLoad()
     return
   }
   try {
@@ -202,9 +219,14 @@ function outputCorrecting(x, thenFnObj) {
   // 只是为了不让代码报错
   return fn
 }
-MyPromise.prototype.setThenOutputStatus = function() {
-  this.thenOutputStatus = true
-  return this
+MyPromise.prototype.microTask = function(cb, status) {
+  if (status) {
+    setTimeout(() => {
+      cb.call(this)
+    }, 0)
+  } else {
+    cb.call(this)
+  }
 }
 MyPromise.prototype.then = function(onFuifilled, onRejected) {
   consoleOk && console.log('then')
@@ -240,7 +262,7 @@ MyPromise.prototype.then = function(onFuifilled, onRejected) {
       resolve,
       reject
     }))
-  }).setThenOutputStatus()
+  }, true)
 }
 MyPromise.prototype.catch = function(onRejected) {
   return this.then(null, onRejected)
