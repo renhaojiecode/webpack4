@@ -1,130 +1,196 @@
 'use strict;'
 import MyPromise from './promise.js'
 function test(MyPromise) {
-  let p1 = new MyPromise((resolve) => {
-    console.log('async before')
-    resolve({'then': function(resolve, reject) {
-      console.log('then')
-      // console.log(p1) // 虽然是同步代码但是不知道为什么能打印出p1的值
-      reject({'then': function(resolve) {
-        console.log('thenreject')
-        resolve('abc')
-      }})
-    }})
-    // resolve(1)
-  })
-  console.log('async')
-  p1.then((res) => {
-    console.log(this, res, 'p1')
-    // return res + 1
-    return {'then': function(resolve) {
-      console.log('then finally')
-      resolve({'then': function(resolve) {
-        console.log('then finally resolve')
-        resolve('abc')
-      }})
-    }}
-  }).finally(() => {
-    console.log('finally', 'p1')
-    return {'then': function(resolve) {
-      console.log('then finally')
-      resolve({'then': function(resolve) {
-        console.log('then finally resolve')
-        resolve('abc')
-      }})
-    }}
-  }).then((res) => {
-    console.log(res, 'p1')
-    return res + 1
-  }).catch(e => {
-    console.log(e)
-  }).then((res) => {
-    console.log(res, 'p1')
-    return res + 1
-  })
-  let p2 = new MyPromise((resolve) => {
-    resolve(1)
-  })
-  p2.then((res) => {
-    console.log(this, res, 'p2')
-    return res + 1
-  }).finally(() => {
-    console.log('finally', 'p2')
-    return {'then': function(resolve) {
-      console.log('then finally p2')
-      resolve({'then': function() {
-        console.log('then finally resolve p2')
-        // resolve('abc')
-      }})
-    }}
-  }).then((res) => {
-    console.log(res, 'p2')
-    return res + 1
-  })
-  let myInstance = new MyPromise((resolve, reject) => {
+  function ConstractorFn(x) {
+    this.a = 1
+    console.log(this)
     setTimeout(() => {
-      resolve(1)
-      reject({'response': 'hahha'})
+      console.log(x)
     }, 100)
-  })
-  let myInstance2 = myInstance.then((res) => {
-    console.log(res, 0)
-    // return res + 1
-    return {'then': function(resolve) {
-      console.log('then')
-      resolve('then-null')
-      /**
-       * 如果返回一个thenable 对象会返回如下Promise对象
-       * new Promise(resolve => {
-       *  let p1 = Promise.resolve('then-null')
-       *  resolve(p1)
-       * })
-       */
-    }}
-  }).then((res) => {
-    console.log(res, 0)
-    return res + 1
-  }).then().then((e) => {
-    console.log(e, 0)
-    throw 'throw'
-  }).then((res) => {
-    console.log(res, 0)
-  }).catch((e) => {
-    console.log(e, 0)
-  }).finally(() => {
-    console.log('finally', 0)
-  }).then((res) => {
-    console.log(res, 0)
-  })
-  myInstance.then(res => {
-    console.log(res, 3)
-    return res + 1
-  }).then(res => {
-    console.log(res, 3)
-    return res + 1
-  }).then(res => {
-    console.log(res, 3)
-    return res + 1
-  }).then(res => {
-    console.log(res, 3)
-    return res + 1
-  })
-  setTimeout(() => {
-    myInstance2.then(res => {
-      console.log(res, 2)
-      return res + 1
-    }).then(res => {
-      console.log(res, 2)
-      return res + 1
+  }
+  let cCase = new ConstractorFn(cCase)
+  let adapter = {}
+  adapter.deferred = function() {
+    let dfd = {}
+    dfd.promise = new MyPromise((resolve, reject) => {
+      dfd.resolve = resolve
+      dfd.reject = reject
     })
-    myInstance.then(res => {
-      console.log(res, 1)
-      return res + 1
-    }).then(res => {
-      console.log(res, 1)
-      return res + 1
-    })
-  }, 300)
+    return dfd
+  }
+  adapter.resolved = function(value) {
+    var d = adapter.deferred()
+    d.resolve(value)
+    return d.promise
+  }
+  adapter.rejected = function(value) {
+    var d = adapter.deferred()
+    d.reject(value)
+    return d.promise
+  }
+  // let promise1 = adapter.resolved()
+  // let promise2 = adapter.rejected()
+  let promise3 = adapter.resolved({dummy: 'dummy'}).then(() => {
+    return promise3
+  })
+  promise3.then(null, (e) => {
+    console.log(e)
+  })
+  // setTimeout(() => {
+  //   promise1.then(function() {
+  //     promise1.then(function() {
+  //       console.log(2)
+  //     })
+  //     console.log(1)
+  //   })
+  //   promise2.then(null, function() {
+  //     promise1.then(function() {
+  //       console.log(5)
+  //     })
+  //     console.log(4)
+  //   })
+  //   console.log(3)
+  // }, 0)
+
+  // MyPromise.all([
+  //   new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       resolve(1)
+  //     }, 1000)
+  //     // reject(1)
+  //   }),
+  //   new Promise((resolve, reject) => {
+  //     reject(2)
+  //   })
+  // ]).then(res => {
+  //   console.log('resolve', res)
+  // }, e => {
+  //   console.log('reject', e)
+  // })
+  // let p1 = new MyPromise((resolve) => {
+  //   console.log('async before')
+  //   resolve({'then': function(resolve, reject) {
+  //     console.log('then')
+  //     // console.log(p1) // 虽然是同步代码但是不知道为什么能打印出p1的值
+  //     reject({'then': function(resolve) {
+  //       console.log('thenreject')
+  //       resolve('abc')
+  //     }})
+  //   }})
+  //   // resolve(1)
+  // })
+  // console.log('async')
+  // p1.then((res) => {
+  //   console.log(this, res, 'p1')
+  //   // return res + 1
+  //   return {'then': function(resolve) {
+  //     console.log('then finally')
+  //     resolve({'then': function(resolve) {
+  //       console.log('then finally resolve')
+  //       resolve('abc')
+  //     }})
+  //   }}
+  // }).finally(() => {
+  //   console.log('finally', 'p1')
+  //   return {'then': function(resolve) {
+  //     console.log('then finally')
+  //     resolve({'then': function(resolve) {
+  //       console.log('then finally resolve')
+  //       resolve('abc')
+  //     }})
+  //   }}
+  // }).then((res) => {
+  //   console.log(res, 'p1')
+  //   return res + 1
+  // }).catch(e => {
+  //   console.log(e)
+  // }).then((res) => {
+  //   console.log(res, 'p1')
+  //   return res + 1
+  // })
+  // let p2 = new MyPromise((resolve) => {
+  //   resolve(1)
+  // })
+  // p2.then((res) => {
+  //   console.log(this, res, 'p2')
+  //   return res + 1
+  // }).finally(() => {
+  //   console.log('finally', 'p2')
+  //   return {'then': function(resolve) {
+  //     console.log('then finally p2')
+  //     resolve({'then': function() {
+  //       console.log('then finally resolve p2')
+  //       // resolve('abc')
+  //     }})
+  //   }}
+  // }).then((res) => {
+  //   console.log(res, 'p2')
+  //   return res + 1
+  // })
+  // let myInstance = new MyPromise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve(1)
+  //     reject({'response': 'hahha'})
+  //   }, 100)
+  // })
+  // let myInstance2 = myInstance.then((res) => {
+  //   console.log(res, 0)
+  //   // return res + 1
+  //   return {'then': function(resolve) {
+  //     console.log('then')
+  //     resolve('then-null')
+  //     /**
+  //      * 如果返回一个thenable 对象会返回如下Promise对象
+  //      * new Promise(resolve => {
+  //      *  let p1 = Promise.resolve('then-null')
+  //      *  resolve(p1)
+  //      * })
+  //      */
+  //   }}
+  // }).then((res) => {
+  //   console.log(res, 0)
+  //   return res + 1
+  // }).then().then((e) => {
+  //   console.log(e, 0)
+  //   throw 'throw'
+  // }).then((res) => {
+  //   console.log(res, 0)
+  // }).catch((e) => {
+  //   console.log(e, 0)
+  // }).finally(() => {
+  //   console.log('finally', 0)
+  // }).then((res) => {
+  //   console.log(res, 0)
+  // })
+  // myInstance.then(res => {
+  //   console.log(res, 3)
+  //   return res + 1
+  // }).then(res => {
+  //   console.log(res, 3)
+  //   return res + 1
+  // }).then(res => {
+  //   console.log(res, 3)
+  //   return res + 1
+  // }).then(res => {
+  //   console.log(res, 3)
+  //   return res + 1
+  // })
+  // setTimeout(() => {
+  //   myInstance2.then(res => {
+  //     console.log(res, 2)
+  //     return res + 1
+  //   }).then(res => {
+  //     console.log(res, 2)
+  //     return res + 1
+  //   })
+  //   myInstance.then(res => {
+  //     console.log(res, 1)
+  //     return res + 1
+  //   }).then(res => {
+  //     console.log(res, 1)
+  //     return res + 1
+  //   })
+  // }, 300)
 }
 let obj = {b: 'etc'}
 test.call(obj, Promise)
@@ -238,6 +304,41 @@ status && (function() {
 })('打乱数组')
 
 status && (function() {
+  // '从一个数组中找到一个最短的连续子数组，这个子数组的和大于或者等于目标值，返回子数组的大小。'
+  let val = 20
+  let arr = [10, 11, 5, 4, 5, 6, 7, 9, 8, 7, 2, 3, 4, 10, 11, 12, 13]
+  console.log(findMinArrNoLessVal(arr, val))
+  function findMinArrNoLessVal(arr, val) {
+    let seriesArr = []
+    let addNumArr = [] // 和 还有 index
+    let k = -1
+    arr.forEach((item, index) => {
+      if (k != -1 && (item - seriesArr[k][0]) == 1) {
+        seriesArr[k].unshift(item)
+        addNumArr[k].addNum += item
+        addNumArr[k].length++
+      } else {
+        k = index
+        seriesArr[k] = [item]
+        addNumArr[k] = {
+          length: 1,
+          noLess: false,
+          addNum: item,
+        }
+      }
+      if (addNumArr[k].addNum >= val) {
+        addNumArr[k].noLess = true
+      }
+    })
+    return addNumArr.filter((item => {
+      return item.noLess
+    })).sort((arg1, arg2) => {
+      return arg1.length - arg2.length
+    })[0].length
+  }
+})('two-pointer')
+
+status && (function() {
   // https://github.com/Raynos/function-bind
   //测试用例地址 https://github.com/Raynos/function-bind/blob/master/test/index.js
   Function.prototype.otherBind = function(that) {
@@ -342,11 +443,11 @@ status && (function(Promise) {
       resolve(a)
     }, 10)
   })
-  let promise2 = promise.then(onFuifilled, onRejected).then(onFuifilled, onRejected)
-  function onFuifilled(res) {
-    console.log(promise2, 'onFuifilled')
-    console.log(res, 'onFuifilled')
-    return {status1: 'onFuifilled'}
+  let promise2 = promise.then(onFulfilled, onRejected).then(onFulfilled, onRejected)
+  function onFulfilled(res) {
+    console.log(promise2, 'onFulfilled')
+    console.log(res, 'onFulfilled')
+    return {status1: 'onFulfilled'}
   }
   function onRejected(err) {
     console.log(err, 'onRejected')

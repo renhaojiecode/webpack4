@@ -177,7 +177,7 @@ const plugins = [
     chunkFilename: '[name]/style-[contenthash:18].css',
   }),
   new webpack.ProvidePlugin({
-    // 自动引入Vue
+    // 自动引入Vue vue.runtime.js
     Vue: ['vue/dist/vue.esm.js', 'default']
   }),
   new webpack.DefinePlugin({ //全局变量

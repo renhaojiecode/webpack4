@@ -1,8 +1,20 @@
 /**
  * 未解决问题
- * 1.new Promise 时value/veason是thenable对象时执行顺序不对和报错
- * 2.针对finally函数是否对cb函数包装为promise对象
  * 3.x 为promise对象时的表现是否正确
+ * 2.3.1: If `promise` and `x` refer to the same object, reject `promise` with a `TypeError' as the reason.
+ *  错误原因：当x为当前 promise 时出错
+ *    1) via return from a fulfilled promise
+ * 2.3.3.1: Let `then` be `x.then`
+ *  `x` is an object with null prototype
+ *    2) via return from a fulfilled promise
+ *    3) via return from a rejected promise
+ *  `x` is an object with normal Object.prototype
+ *    4) via return from a fulfilled promise
+ *    5) via return from a rejected promise
+ *  。。。。。
+ * 2.3.4: If `x` is not an object or function, fulfill `promise` with `x`
+ *  The value is `null`
+ *    全部出错
  */
 let consoleOk = false
 let id = 100
@@ -12,7 +24,7 @@ function MyPromise(executor, status = false, thenable = false) {
   }
   this.freename = id
   id++
-  this.status = 'pending' // pending fuilfilled rejected
+  this.status = 'pending' // pending fulfilled rejected
   this.value = undefined
   this.reason = undefined
   this.isThenAble = thenable // 是否是thenable对象在执行
@@ -25,7 +37,7 @@ function MyPromise(executor, status = false, thenable = false) {
       executor((x) => {
         if (n) return
         n++
-        outputCorrecting.call(this, x, null)
+        outputCorrecting.call(this, x, null, 'fulfilled')
         // resolvePromise
       }, (e) => {
         if (n) return
@@ -33,7 +45,7 @@ function MyPromise(executor, status = false, thenable = false) {
         if (this.thenOutputStatus) {
           rejectPromise.call(this, e)
         } else {
-          outputCorrecting.call(this, e, null)
+          outputCorrecting.call(this, e, null, 'rejected')
         }
       })
     }, this.isThenAble)
@@ -45,7 +57,7 @@ function MyPromise(executor, status = false, thenable = false) {
 function resolvePromise(x) {
   this.microTask(function() {
     consoleOk && console.log('attr resolve', this.status)
-    asyncFn.call(this, 'fuilfilled', x)
+    asyncFn.call(this, 'fulfilled', x)
   }, !this.isThenAble)
 }
 function rejectPromise(e) {
@@ -56,7 +68,7 @@ function rejectPromise(e) {
 }
 function asyncFn(type, x) {
   let _this = this
-  if (type === 'fuilfilled') {
+  if (type === 'fulfilled') {
     _this.value = x
   } else if (type === 'rejected') {
     _this.reason = x
@@ -66,7 +78,7 @@ function asyncFn(type, x) {
     _this.status = type
     let output = undefined
     let arr = []
-    if (type === 'fuilfilled') {
+    if (type === 'fulfilled') {
       output = _this.value
       arr = _this.onFulfilledArr
     } else if (type === 'rejected') {
@@ -77,7 +89,7 @@ function asyncFn(type, x) {
     let len = arr.length
     for (let i = 0; i < len; i++) {
       try {
-        outputCorrecting.call(_this, output, arr[i])
+        outputCorrecting.call(_this, output, arr[i], type)
         //arg[3] 代表是then 队列在执行
       } catch (e) {
         arr[i].reject(e)
@@ -87,25 +99,20 @@ function asyncFn(type, x) {
     _this.onFulfilledArr = []
   }
 }
-function rejectOutputFn(x, thenFnObj) {
-  let fn = undefined
-  try {
-    if (thenFnObj.thenArgFn) {
-      let output = (fn = thenFnObj.thenArgFn)(x)
-      thenFnObj.resolve(output)
-    } else {
-      thenFnObj.reject(x)
-    }
-  } catch (e) {
-    thenFnObj.reject(e)
-  }
-  return fn
-}
-function outputCorrecting(x, thenFnObj) {
+function outputCorrecting(x, thenFnObj, type) {
   let _this = this
   let fn = undefined
   if (_this.status === 'rejected') {
-    rejectOutputFn(x, thenFnObj)
+    try {
+      if (thenFnObj.thenArgFn) {
+        let output = (fn = thenFnObj.thenArgFn)(x)
+        thenFnObj.resolve(output)
+      } else {
+        thenFnObj.reject(x)
+      }
+    } catch (e) {
+      thenFnObj.reject(e)
+    }
     return
   }
   if (x === MyPromise) {
@@ -117,9 +124,8 @@ function outputCorrecting(x, thenFnObj) {
       rejectPromise.call(_this, e)
     }
     return
-  }
-  // x 为 Promise
-  if (x instanceof MyPromise) {
+  } else if (x instanceof MyPromise) {
+    // x 为 Promise
     x.then((res) => {
       try {
         if (thenFnObj) {
@@ -143,9 +149,8 @@ function outputCorrecting(x, thenFnObj) {
       }
     })
     return
-  }
-  // x 为 thenable 对象或函数
-  if ((typeof x === 'object' || typeof x === 'function') && x.then && typeof x.then === 'function') {
+  } else if ((typeof x === 'object' || typeof x === 'function') && x.then && typeof x.then === 'function') {
+    // x 为 thenable 对象或函数
     let then = null
     let bindThen = null
     try {
@@ -194,26 +199,28 @@ function outputCorrecting(x, thenFnObj) {
     }
     thenableLoad()
     return
-  }
-  try {
-    if (thenFnObj) {
-      if (thenFnObj.thenArgFn) {
-        outputCorrecting.call(_this, (fn = thenFnObj.thenArgFn)(x), {
-          thenArgFn: null,
-          resolve: thenFnObj.resolve,
-          reject: thenFnObj.reject,
-        })
+  } else {
+    try {
+      if (thenFnObj) {
+        if (thenFnObj.thenArgFn) {
+          outputCorrecting.call(_this, (fn = thenFnObj.thenArgFn)(x), {
+            thenArgFn: null,
+            resolve: thenFnObj.resolve,
+            reject: thenFnObj.reject,
+          })
+        } else {
+          thenFnObj.resolve(x)
+        }
       } else {
-        thenFnObj.resolve(x)
+        type == 'fulfilled' && resolvePromise.call(_this, x)
+        type == 'rejected' && rejectPromise.call(_this, x)
       }
-    } else {
-      resolvePromise.call(_this, x)
-    }
-  } catch (e) {
-    if (thenFnObj) {
-      thenFnObj.reject(e)
-    } else {
-      rejectPromise.call(_this, e)
+    } catch (e) {
+      if (thenFnObj) {
+        thenFnObj.reject(e)
+      } else {
+        rejectPromise.call(_this, e)
+      }
     }
   }
   // 只是为了不让代码报错
@@ -228,20 +235,25 @@ MyPromise.prototype.microTask = function(cb, status) {
     cb.call(this)
   }
 }
-MyPromise.prototype.then = function(onFuifilled, onRejected) {
+MyPromise.prototype.then = function(onFulfilled, onRejected) {
   consoleOk && console.log('then')
   // 链式调用时如果 status 是执行态 直接取value
   let _this = this
   let pending = _this.status === 'pending'
   let onFulfilledItem = {}
   let onRejectedItem = {}
-  if ((pending || _this.status === 'fuilfilled') && onFuifilled && typeof onFuifilled === 'function') {
+  if ((pending || _this.status === 'fulfilled') && onFulfilled && typeof onFulfilled === 'function') {
     if (pending) {
       onFulfilledItem = {
-        thenArgFn: onFuifilled
+        thenArgFn: onFulfilled
       }
     } else {
-      return MyPromise.resolve(onFuifilled(_this.value))
+      return new MyPromise(resolve => {
+        this.microTask(() => {
+          onFulfilled(_this.value)
+          resolve()
+        }, true)
+      })
     }
   }
   if ((pending || _this.status === 'rejected') && onRejected && typeof onRejected === 'function') {
@@ -250,17 +262,22 @@ MyPromise.prototype.then = function(onFuifilled, onRejected) {
         thenArgFn: onRejected
       }
     } else {
-      return MyPromise.reject(onRejected(_this.reason))
+      return new MyPromise((resolve, reject) => {
+        this.microTask(() => {
+          onRejected(_this.reason)
+          reject()
+        }, true)
+      })
     }
   }
   return new MyPromise((resolve, reject) => {
     _this.onFulfilledArr.push(Object.assign(onFulfilledItem, {
       resolve,
-      reject
+      reject,
     }))
     _this.onRejectedArr.push(Object.assign(onRejectedItem, {
       resolve,
-      reject
+      reject,
     }))
   }, true)
 }
@@ -285,7 +302,39 @@ MyPromise.reject = function(e) {
     reject(e)
   })
 }
-export default MyPromise
+MyPromise.all = function(listPromise) {
+  return new MyPromise((resolve, reject) => {
+    if (!listPromise || !Array.isArray(listPromise)) {
+      reject(new TypeError('undefined is not iterable (cannot read property Symbol(Symbol.iterator))'))
+      return
+    }
+    if (!listPromise.length) {
+      resolve([])
+      return
+    }
+    let n = 0
+    let resolveStatus = true
+    let outputArr = []
+    listPromise.forEach((itemPromise, index) => {
+      (function(i) {
+        itemPromise.then(res => {
+          if (!resolveStatus) return
+          n++
+          outputArr[i] = res
+          if (n == listPromise.length) {
+            resolve(outputArr)
+          }
+        }, e => {
+          resolveStatus = false
+          reject(e)
+          return
+        })
+      })(index)
+    })
+  })
+}
+// export default MyPromise
+module.exports = MyPromise
 
 /**
  * then 返回promise对象
