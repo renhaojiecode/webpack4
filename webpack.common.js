@@ -25,7 +25,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      components: path.resolve(__dirname, './src/components/')
+      '@components': path.resolve(__dirname, './src/components/'),
+      '@common': path.resolve(__dirname, './src/common/')
     }
   },
   module: {
@@ -209,47 +210,40 @@ module.exports = {
     }),
   ],
   optimization: {
-    // minimizer: [ 
-    //   // devMode ? new TerserJSPlugin() : '', //压缩js代码
-    //   new OptimizeCssAssetsPlugin({
-    //     assetNameRegExp: /\.css$/g,
-    //     cssProcessorOptions: {
-    //       safe: true,
-    //       autoprefixer: { disable: true }, //禁用掉cssnano对于浏览器前缀的
-    //       mergeLonghand: false,
-    //       discardComments: {
-    //         removeAll: true // 移除注释
-    //       }
-    //     },
-    //     canPrint: true
-    //   }),
-    // ],
-    // splitChunks: {
-      // chunks: 'async',
-      // minSize: 30000,
-      // maxSize: 0,
-      // minChunks: 1,
-      // maxAsyncRequests: 5,
-      // maxInitialRequests: 3,
-      // automaticNameDelimiter: '~',
-      // name: true,
-    //   cacheGroups: {
-    //     commons: {
-    //       name: 'commons',
-    //       chunks: "initial",  //入口处开始提取代码
-    //       minSize: 0,      //代码最小多大，进行抽离
-    //       minChunks: 2,
-    //     },
-    //     vendors: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       priority: 1
-    //     },
-    //     // default: {
-    //     //   minChunks: 2,
-    //     //   priority: -20,
-    //     //   reuseExistingChunk: true
-    //     // }
-    //   }
-    // }
+    // runtimeChunk: {
+    //   name: "_manifest"
+    // },
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        default: false,
+        vendors: false,
+        // defaults1: { // 自己开发的并且需要打到每个页面里的脚本，都放在这里
+        //   name: 'parents/_defaults1',
+        //   test: /(gt\.js|_loadTrack\.js)/,
+        //   chunks: 'initial',
+        //   minChunks: 1,
+        //   minSize: 1,
+        //   enforce: true,
+        //   priority: 20,
+        // },
+        vendor: { // node_modules里面的需要打到每个页面里的脚本，都放在这里
+          name: '_vendor',
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'initial',
+          minChunks: 10,
+          enforce: true,
+          priority: 10,
+        },
+        common: { //  自己开发的组件，符合minChunks: 10的，都放在这里面
+          name: '_common',
+          test: /\.js/,
+          chunks: "all",
+          minChunks: 10,
+          enforce: true,
+          priority: 5
+        }
+      },
+    }
   },
 }

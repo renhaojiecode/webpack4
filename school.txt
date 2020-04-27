@@ -1,3 +1,41 @@
+HR question
+  5、咱们招人的原因是什么
+  6、咱们前端团队有多少人
+  1、社保等缴存比例
+  2、多少薪
+  3、房补饭补等
+  4、上班时间、地点 是否双休
+  
+职业规划
+  
+离职原因
+  在kid呆了快三年了， 想换一个环境
+
+工作遇到的问题  如何解决的
+  0、页面返回后的刷新问题
+    如果只需要监听到这个事件 app内使用 app提供的pageshow方法
+    如果刷新这个页面 使用worker 特性使页面没有cache 达到刷新的目的
+  1、课程详情取消约课 500 日志大量飙升
+      公司更换 cdn 供应商 供应商对500 的请求策略有8次重试造成
+  2、安全组发现供需接口漏洞  xss 攻击修改 body
+      网关使用Parameter 校验一家人  而供需组使用body 但是只校验了 操作人和学生的关系 没有token校验。
+  3、ios 上自动执行focus()无法唤起键盘  非用户点击权限不够
+      在用户点击搜索时隐藏一个input在按钮上 这样可以获得用户点击权限 成功唤起键盘
+      该方法比较hack
+最近在研究什么
+  研究了一下 rem和px那个好
+
+HTML&CSS：
+	对Web标准的理解（结构、表现、行为）、浏览器内核、渲染原理、依赖管理、兼容性、CSS语法、层次关系，常用属性、布局、选择器、权重、盒模型、
+	Hack、CSS预处理器、CSS3、Flexbox、CSS Modules、Document flow、BFC、HTML5（离线 & 存储、Histoy,多媒体、WebGL\SVG\Canvas）；		
+JavaScript：
+    数据类型、运算、对象、Function、继承、闭包、作用域、事件、Prototype、RegExp、JSON、Ajax、DOM、BOM、
+    内存泄漏、跨域、异步请求、模板引擎、模块化、Flux、同构、算法、ECMAScript6、Nodejs、HTTP、
+
+其他：
+    主流MVVM框架(React\Vue\Angular)、Hybrid App\React Native\Weex、TypeScript、RESTFul、WEB安全、前端工程化、依赖管理、性能优化、
+    重构、团队协作、可维护、易用性、SEO、UED、前端技术选型、快速学习能力等；
+
 记录一些知识点
 手写bind 函数 https://github.com/Raynos/function-bind/blob/master/implementation.js
 手写promise 
@@ -128,3 +166,28 @@ CommonJS AMD Module
 Vue
   style scoped  可以这样使作用于子组件
   .a >>> .b { /* ... */ }
+
+
+1、捕获和冒泡
+  被点击节点 先绑定先执行
+  先捕获从上到下
+  后冒泡从下到上
+
+
+S 95≤得分≤100
+  工作成果显著超出目标预期/岗位要求，有重大突破或创新
+
+A 90≤得分＜95
+  工作成果均超出目标预期/岗位要求，有亮点
+
+B+ 85≤得分<90
+  工作成果整体达标，有部分超出目标预期/岗位要求，有亮点
+B 75≤得分<85
+  工作成果整体达标，完全达到目标预期/岗位要求
+B- 70≤得分<75
+  工作成果整体达标，有部分达到目标预期/岗位要求，需要提高
+
+C 60≤得分<70
+  工作成果未达到目标预期/岗位要求，存在一些差距，存在一定改进空间
+D 0≤得分<60
+  工作成果未达到目标预期/岗位要求，存在明显差距

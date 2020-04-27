@@ -4,17 +4,6 @@
  * 2.3.1: If `promise` and `x` refer to the same object, reject `promise` with a `TypeError' as the reason.
  *  错误原因：当x为当前 promise 时出错
  *    1) via return from a fulfilled promise
- * 2.3.3.1: Let `then` be `x.then`
- *  `x` is an object with null prototype
- *    2) via return from a fulfilled promise
- *    3) via return from a rejected promise
- *  `x` is an object with normal Object.prototype
- *    4) via return from a fulfilled promise
- *    5) via return from a rejected promise
- *  。。。。。
- * 2.3.4: If `x` is not an object or function, fulfill `promise` with `x`
- *  The value is `null`
- *    全部出错
  */
 let consoleOk = false
 let id = 100
@@ -115,8 +104,8 @@ function outputCorrecting(x, thenFnObj, type) {
     }
     return
   }
-  if (x === MyPromise) {
-    let e = new TypeError('x can\'t be MyPromise')
+  if (thenFnObj && x && x.freename === thenFnObj.id) {
+    let e = new TypeError('Chaining cycle detected for promise')
     if (thenFnObj) {
       thenFnObj.reject(e)
     } else {
@@ -149,13 +138,17 @@ function outputCorrecting(x, thenFnObj, type) {
       }
     })
     return
-  } else if ((typeof x === 'object' || typeof x === 'function') && x.then && typeof x.then === 'function') {
+  } else if (x && (typeof x === 'object' || typeof x === 'function')) {
     // x 为 thenable 对象或函数
-    let then = null
     let bindThen = null
     try {
-      then = x.then
-      bindThen = then.bind(x)
+      let then = x.then
+      if (typeof then === 'function') {
+        bindThen = then.bind(x)
+      } else {
+        xCommon(_this, x, thenFnObj, type)
+        return
+      }
     } catch (e) {
       if (thenFnObj) {
         thenFnObj.reject(e)
@@ -200,30 +193,36 @@ function outputCorrecting(x, thenFnObj, type) {
     thenableLoad()
     return
   } else {
-    try {
-      if (thenFnObj) {
-        if (thenFnObj.thenArgFn) {
-          outputCorrecting.call(_this, (fn = thenFnObj.thenArgFn)(x), {
-            thenArgFn: null,
-            resolve: thenFnObj.resolve,
-            reject: thenFnObj.reject,
-          })
-        } else {
-          thenFnObj.resolve(x)
-        }
-      } else {
-        type == 'fulfilled' && resolvePromise.call(_this, x)
-        type == 'rejected' && rejectPromise.call(_this, x)
-      }
-    } catch (e) {
-      if (thenFnObj) {
-        thenFnObj.reject(e)
-      } else {
-        rejectPromise.call(_this, e)
-      }
-    }
+    xCommon(_this, x, thenFnObj, type)
   }
   // 只是为了不让代码报错
+  return fn
+}
+function xCommon(_this, x, thenFnObj, type) {
+  let fn = null
+  try {
+    if (thenFnObj) {
+      if (thenFnObj.thenArgFn) {
+        outputCorrecting.call(_this, (fn = thenFnObj.thenArgFn)(x), {
+          thenArgFn: null,
+          resolve: thenFnObj.resolve,
+          reject: thenFnObj.reject,
+          id: thenFnObj.id
+        })
+      } else {
+        thenFnObj.resolve(x)
+      }
+    } else {
+      type == 'fulfilled' && resolvePromise.call(_this, x)
+      type == 'rejected' && rejectPromise.call(_this, x)
+    }
+  } catch (e) {
+    if (thenFnObj) {
+      thenFnObj.reject(e)
+    } else {
+      rejectPromise.call(_this, e)
+    }
+  }
   return fn
 }
 MyPromise.prototype.microTask = function(cb, status) {
@@ -274,10 +273,12 @@ MyPromise.prototype.then = function(onFulfilled, onRejected) {
     _this.onFulfilledArr.push(Object.assign(onFulfilledItem, {
       resolve,
       reject,
+      id: id - 1,
     }))
     _this.onRejectedArr.push(Object.assign(onRejectedItem, {
       resolve,
       reject,
+      id: id - 1,
     }))
   }, true)
 }
@@ -293,11 +294,17 @@ MyPromise.prototype.finally = function(onFinallyed) {
   })
 }
 MyPromise.resolve = function(x) {
+  if (x instanceof MyPromise) {
+    return x
+  }
   return new MyPromise((resolve) => {
     resolve(x)
   })
 }
 MyPromise.reject = function(e) {
+  if (e instanceof MyPromise) {
+    return e
+  }
   return new MyPromise((resolve, reject) => {
     reject(e)
   })
