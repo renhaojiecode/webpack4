@@ -7,7 +7,7 @@
         v-for="(item, index) in sumUpList"
         :key="index"
         :class="{'cur': nowIndex == index}"
-        v-text="index + 1 + '、' + item.title"
+        v-html="index + 1 + '、' + item.title"
         @click="showIndexContent(index)"
       ></div>
     </div>
@@ -19,14 +19,15 @@
         :key="index"
         v-show="nowIndex == index"
       >
-        <h1 class="title" v-text="item.title"></h1>
+        <h1 class="title" v-html="item.title"></h1>
         <div class="code-content-item"
           v-for="(content, contentindex) in item.content"
           :key="contentindex"
         >
-          <h2 class="content-title" v-if="content.title" v-text="content.title"></h2>
+          <h2 class="content-title" v-if="content.title" v-html="content.title"></h2>
           <p class="desc-item"
             v-for="(desc, descindex) in content.desc"
+            v-show="desc != ''"
             :key="descindex"
             v-html="descindex + 1 + '、' + desc"
           >
@@ -48,13 +49,16 @@
 <script>
 import hljs from '@common/highlight.js'
 hljs.initHighlightingOnLoad() // pre 节点内的语法高亮
+// import test from './sunmup/test.js' //测试 module语法等
 import base from './sunmup/base.js'
 import interview from './sunmup/interview.js'
+import vueapi from './sunmup/vueapi.js'
 import commonModule from './sunmup/Common-Module.js'
 import promiseAsync from './sunmup/promise-async.js'
 import constructor from './sunmup/constructor-prototype.js'
 import prptotype from './sunmup/prptotype.js'
 import eslint from './sunmup/eslint.js'
+import webpack from './sunmup/Webpack.js'
 export default {
   data() {
     return {
@@ -62,17 +66,18 @@ export default {
       sumUpList: [
         base,
         interview,
+        vueapi,
         commonModule,
         promiseAsync,
         constructor,
         prptotype,
         eslint,
+        webpack,
       ],
     }
   },
   mounted() {
     //
-
   },
   methods: {
     showIndexContent(index) {
@@ -93,12 +98,12 @@ export default {
       document.body.removeChild(transfer)
     },
     tryCode(code) {
-      eval(code)
+      eval('(function(){' + code + '})()')
     },
   }
 }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
 .know-ledge-wrapper
   position: relative
   width: 100%

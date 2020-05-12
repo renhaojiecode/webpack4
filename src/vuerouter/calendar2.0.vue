@@ -76,7 +76,7 @@
  *  }
  * ]
  */
-import Hammer from '../lib/hammer.min.js'
+import Hammer from '../common/hammer.min.js'
 export default {
   props: {
     type: { // list 模式 用于课表

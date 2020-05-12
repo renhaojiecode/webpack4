@@ -15,6 +15,7 @@ module.exports = {
     homecopy: './src/homecopy/index.js',
     vuerouter: './src/vuerouter/index.js',
     interview: './src/interview/index.js',
+    mobilephone: './src/mobilephone/index.js',
   },
   output: {
     filename: '[name]/bundle-[chunkhash:18].js',
@@ -195,6 +196,12 @@ module.exports = {
       template: './src/interview/index.html',
       filename: 'interview/index.html',
       chunks: ['interview'],
+      favicon: './favicon.png'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/mobilephone/index.html',
+      filename: 'mobilephone/index.html',
+      chunks: ['mobilephone'],
       favicon: './favicon.png'
     }),
     new AddAssetHtmlPlugin({

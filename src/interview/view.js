@@ -6,7 +6,7 @@
 
 // computed 和 watch 的区别和运用的场景
 
-// keep-live
+// keep-alive
 
 // commmonJS module语法区别 commmonJS查找文件的方式
 
