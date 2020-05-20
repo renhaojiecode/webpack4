@@ -16,6 +16,7 @@ module.exports = {
     vuerouter: './src/vuerouter/index.js',
     interview: './src/interview/index.js',
     mobilephone: './src/mobilephone/index.js',
+    video: './src/video/index.js',
   },
   output: {
     filename: '[name]/bundle-[chunkhash:18].js',
@@ -202,6 +203,12 @@ module.exports = {
       template: './src/mobilephone/index.html',
       filename: 'mobilephone/index.html',
       chunks: ['mobilephone'],
+      favicon: './favicon.png'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/video/index.html',
+      filename: 'video/index.html',
+      chunks: ['video'],
       favicon: './favicon.png'
     }),
     new AddAssetHtmlPlugin({

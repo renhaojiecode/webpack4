@@ -369,100 +369,41 @@ status && (function() {
 })('two-pointer')
 
 status && (function() {
-  // https://github.com/Raynos/function-bind
-  //测试用例地址 https://github.com/Raynos/function-bind/blob/master/test/index.js
-  Function.prototype.otherBind = function(that) {
-    var target = this
-    var ERROR_MESSAGE = 'Function.prototype.bind called on incompatible '
-    var slice = Array.prototype.slice
-    var toStr = Object.prototype.toString
-    var funcType = '[object Function]'
-    if (typeof target !== 'function' || toStr.call(target) !== funcType) {
-      throw new TypeError(ERROR_MESSAGE + target)
-    }
-    var args = slice.call(arguments, 1)
-    var bound
-    var binder = function() {
-      if (this instanceof bound) {
-        var result = target.apply(
-          this,
-          args.concat(slice.call(arguments))
-        )
-        if (Object(result) === result) {
-          return result
-        }
-        return this
-      } else {
-        return target.apply(
-          that,
-          args.concat(slice.call(arguments))
-        )
-      }
-    }
-
-    var boundLength = Math.max(0, target.length - args.length)
-    var boundArgs = []
-    for (var i = 0; i < boundLength; i++) {
-      boundArgs.push('$' + i)
-    }
-
-    bound = Function('binder', 'return function (' + boundArgs.join(',') + '){ return binder.apply(this,arguments) }')(binder)
-    function Empty() {
-      //
-    }
-    if (target.prototype) {
-      Empty.prototype = target.prototype
-      bound.prototype = new Empty()
-      Empty.prototype = null
-    }
-
-    return bound
-  }
   // bind 函数实现
   // 创建一个绑定函数 第一个参数变更目标函数的this指向 后边的参数会在调用绑定函数时 传入目标函数中 如果在绑定函数继续传入参数会在后边传入
-  Function.prototype.myBind = function() {
-    let _this = this
-    let newThis = arguments[0]
-    let slice = Array.prototype.slice
-    let args = slice.call(arguments, 1)
-    let toStr = Object.prototype.toString
-    if (typeof _this !== 'function' && toStr.call(_this) !== '[object Function]') {
-      // 箭头函数typeof 总是报错？？？
+  let obj = {
+    x: 10,
+    getX() {
+      return this.x
+    }
+  }
+  function GetX(...args) {
+    console.log(this, args)
+  }
+  GetX.prototype.getX = function() {
+    return 'abc'
+  }
+  Function.prototype.BindFn = function(target, ...args) {
+    if (!(this instanceof Function)) {
       throw 'this is not a Funtion'
     }
-    function Callback() {
-      if (this instanceof Callback) {
-        console.log('Callback')
+    let _this = this
+    function Bound(...argsOther) {
+      console.log('this', this)
+      if (this instanceof Bound) {
         return this
       }
-      let fnArgs = args.concat(slice.apply(arguments))
-      return _this.apply(newThis, fnArgs)
+      return _this.apply(target, args.concat(argsOther))
     }
-    function Empty() {
-      //
-    }
-    Empty.prototype = _this.prototype
-    Callback.prototype = new Empty()
-    Empty.prototype = null
-    return Callback
+    Bound.prototype = Object.create(this.prototype)
+    return Bound
   }
+  let bindGetX = GetX.BindFn(obj, 1, 2)
+  console.log(bindGetX(3, 4))
+  let bind5 = new bindGetX()
 
-  function TestTwo(x, y) {
-    return this.add(x, y)
-  }
-  TestTwo.prototype.add = function(x, y) {
-    return x + y
-  }
-  let map = {
-    name: 'abc',
-    add: function(x, y) {
-      return x + y + this.name
-    }
-  }
-  let fn = TestTwo.myBind(map, 3)
-  console.log(fn(4, 5))
-  // let fnNew = new fn(4, 5)
-  // console.log(fnNew())
+  console.log(bind5)
+  console.log(bind5.getX())
 })('bind 函数实现')
 
 status && (function(Promise) {

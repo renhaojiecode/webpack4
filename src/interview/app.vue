@@ -77,9 +77,17 @@ export default {
     }
   },
   mounted() {
-    //
+    this.init()
   },
   methods: {
+    init() {
+      //
+      // let arr = ['A', 'A1', 'A2', 'B', 'B1', 'B2', 'C', 'C1', 'C2', 'D', 'D1', 'D2'].sort((val1, val2) => {
+      //   let a = val1.includes(val2) ? -1 : (val1 > val2 ? 1 : -1)
+      //   return a
+      // })
+      // console.log(arr)
+    },
     showIndexContent(index) {
       this.nowIndex = index
       location.hash = `#${index}`

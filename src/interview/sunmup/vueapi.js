@@ -3,6 +3,20 @@ export default {
   name: '', // 暂未使用保留字段
   content: [
     {
+      title: 'Vue 3.0 使用 Proxy 代替 Object.defineProperty 的优点',
+      desc: [
+        '消除了之前 Vue2.x 中基于 Object.defineProperty 的实现所存在的很多限制：无法监听 属性的添加和删除、数组索引和长度的变更，并可以支持 Map、Set、WeakMap 和 WeakSet！',
+        '通过 Proxy 我们可以不直接操作对象本身，而是通过操作对象的代理对象来间接来操作对象，达到预期的目的~',
+      ]
+    },
+    {
+      title: '响应式原理',
+      desc: [
+        '当你把一个普通的 JavaScript 对象传入 Vue 实例作为 data 选项，Vue 将遍历此对象所有的 property，并使用 Object.defineProperty 把这些 property 全部转为 getter/setter。Object.defineProperty 是 ES5 中一个无法 shim 的特性，这也就是 Vue 不支持 IE8 以及更低版本浏览器的原因。',
+        '每个组件实例都对应一个 watcher 实例，它会在组件渲染的过程中把“接触”过的数据 property 记录为依赖。之后当依赖项的 setter 触发时，会通知 watcher，从而使它关联的组件重新渲染。',
+      ]
+    },
+    {
       title: 'nextTick',
       jsCode: `const callbacks = []
 let pending = false

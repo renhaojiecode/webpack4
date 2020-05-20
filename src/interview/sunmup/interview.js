@@ -314,6 +314,85 @@ Array.from('x\uD83D\uDE80y').reverse().join('') // 'y\uD83D\uDE80x'
       desc: [
         '',
       ],
+    },
+    {
+      title: '请实现⼀个 Events 对象，⾄少包括 on , emit, once, off ⽅法。',
+      jsCode: `
+class Events{
+  constructor() {
+    this.eventMap = {}
+  }
+  on(event, fn) {
+    let cbArr = this.eventMap[event] || []
+    cbArr.push(fn)
+    this.eventMap[event] = cbArr
+  }
+  emit(event, ...args) {
+    let arr = this.eventMap[event]
+    if (Array.isArray(arr)) {
+      arr.forEach(fn => {
+        fn.apply(this, args)
+      })
+    }
+  },
+  once(event, fn) {
+    let cb = function(...args) {
+      fn.apply(this, args)
+      this.off(event, cb)
+    }
+    this.on(event, cb)
+  },
+  off(event, fn) {
+    let arr = this.eventMap[event]
+    if (Array.isArray(arr)) {
+      this.eventMap[event] = arr.filter(cb => {
+        return cb !== fn
+      })
+    }
+  },
+}
+`,
+      desc: [
+        '1、on(event,fn)：监听event事件，事件触发时调用fn函数；',
+        '2、once(event,fn)：为指定事件注册一个单次监听器，单次监听器最多只触发一次，触发后立即解除监听器；',
+        '3、emit(event,arg1,arg2,arg3...)：触发event事件，并把参数arg1,arg2,arg3....传给事件处理函数；',
+        '4、off(event,fn)：停止监听某个事件。',
+      ],
+    },
+    {
+      title: '深度优先遍历DFS / 广度优先遍历BFS',
+      jsCode: `
+// 深度优先遍历
+function dfs(node) {
+  let nodeList = []
+  if (!!node) {
+    nodeList.push(node)
+    let list = [...node.children]
+    list.forEach(nodec => {
+      nodeList.push(...dfs(nodec))
+    })
+  }
+  return nodeList
+}
+// 广度优先遍历
+function bfs(node) {
+  let nodeList = []
+  if (!!node) {
+    nodeList.push(node)
+    let list = [...node.children]
+    while(list.length) {
+      let nodec = list.shift()
+      nodeList.push(nodec)
+      list.push(...nodec.children)
+    }
+  }
+  return nodeList
+}
+`,
+      desc: [
+        '深度优先遍历: 从顶点开始，找到一个节点后，把它的后辈都找出来，最常用递归法。',
+        '广度优先：从顶点开始，找到一个节点后，把他同级的兄弟节点都找出来放在前边，把孩子放到后边，最常用 while',
+      ],
       img: []
     },
     // {
