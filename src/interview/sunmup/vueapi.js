@@ -3,6 +3,18 @@ export default {
   name: '', // 暂未使用保留字段
   content: [
     {
+      title: 'Vue 3.0 新特性',
+      // https://zhuanlan.zhihu.com/p/147022323?utm_source=wechat_session&utm_medium=social&utm_oi=751382926662320128
+      desc: [
+        '使用 Proxy 代替Object.defineProperty',
+        '使用 TypeScript 编写',
+        'Vue有一个相当独特的渲染策略：它提供类似于HTML的模板语法，但是，它是将模板编译成渲染函数来返回虚拟DOM树。Vue框架通过递归遍历两个虚拟DOM树，并比较每个节点上的每个属性，来确定实际DOM的哪些部分需要更新。 \
+        <br>&nbsp;&nbsp; 1、在编译阶段 对可能发生变更的节点（v-if,v-for）进行分块，在变更时 追踪到相应的块去 进行虚拟dom更新  \
+        <br>&nbsp;&nbsp; 2、并且 对于那些静态的节点 等在生成代码时保存在 render函数外 避免不必要的渲染。',
+        '体积更小 对不常用的功能进行 模块化引入 依靠 module 的tree-shaking 进一步减小打包体积',
+      ]
+    },
+    {
       title: 'Vue 3.0 使用 Proxy 代替 Object.defineProperty 的优点',
       desc: [
         '消除了之前 Vue2.x 中基于 Object.defineProperty 的实现所存在的很多限制：无法监听 属性的添加和删除、数组索引和长度的变更，并可以支持 Map、Set、WeakMap 和 WeakSet！',
@@ -15,6 +27,13 @@ export default {
         '当你把一个普通的 JavaScript 对象传入 Vue 实例作为 data 选项，Vue 将遍历此对象所有的 property，并使用 Object.defineProperty 把这些 property 全部转为 getter/setter。Object.defineProperty 是 ES5 中一个无法 shim 的特性，这也就是 Vue 不支持 IE8 以及更低版本浏览器的原因。',
         '每个组件实例都对应一个 watcher 实例，它会在组件渲染的过程中把“接触”过的数据 property 记录为依赖。之后当依赖项的 setter 触发时，会通知 watcher，从而使它关联的组件重新渲染。',
       ]
+    },
+    {
+      title: 'scoped 小技巧',
+      jsCode: `
+style scoped  可以这样使作用于子组件
+.a >>> .b { /* ... */ }
+`
     },
     {
       title: 'nextTick',

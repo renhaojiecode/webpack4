@@ -54,6 +54,23 @@ function getAttr(obj, name) {
       ],
     },
     {
+      title: '实现一个new',
+      jsCode: `
+function new(traget, ...arg) {
+  let obj = Object.create(traget.prototype)
+  let result = traget.apply(obj, arg)
+  return typeof result == 'object' ? result : obj
+}
+`,
+      desc: [
+        '创建一个对象obj',
+        '继承 target',
+        '为 obj 添加方法和属性',
+        '如果 target 返回一个对象 则输出对象',
+        '否则输出 obj'
+      ],
+    },
+    {
       title: '继承',
       jsCode: `// 显式继承
 // Object.setPropertyOf 和 Object.create 的差别在于：

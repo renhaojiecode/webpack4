@@ -59,6 +59,9 @@ import constructor from './sunmup/constructor-prototype.js'
 import prptotype from './sunmup/prptotype.js'
 import eslint from './sunmup/eslint.js'
 import webpack from './sunmup/Webpack.js'
+import http from './sunmup/http.js'
+import codeSpeedUp from './sunmup/code-speed-up.js'
+
 export default {
   data() {
     return {
@@ -71,8 +74,10 @@ export default {
         promiseAsync,
         constructor,
         prptotype,
-        eslint,
         webpack,
+        http,
+        codeSpeedUp,
+        eslint,
       ],
     }
   },
@@ -82,11 +87,36 @@ export default {
   methods: {
     init() {
       //
-      // let arr = ['A', 'A1', 'A2', 'B', 'B1', 'B2', 'C', 'C1', 'C2', 'D', 'D1', 'D2'].sort((val1, val2) => {
-      //   let a = val1.includes(val2) ? -1 : (val1 > val2 ? 1 : -1)
-      //   return a
-      // })
-      // console.log(arr)
+      // 给定 nums1 = [1, 2, 2, 1]，nums2 = [2, 2]，返回 [2, 2]。
+      console.log(getCommon([1, 2, 1, 3, 2, 1], [2, 2, 2, 1, 3]))
+      function getCommon(arr1, arr2) {
+        let commonList = []
+        let nIndex = 0
+        for (let i = 0; i < arr1.length; i++) {
+          if (i < nIndex) continue
+          let val = arr1[i]
+          let n = i
+          let arr2S = arr2.toString()
+          if (arr2.indexOf(val) != -1) {
+            let list = [val]
+            let ok = true
+            while (ok) {
+              n++
+              if (arr2S.indexOf([...list, arr1[n]].toString()) != -1) {
+                list.push(arr1[n])
+              } else {
+                ok = false
+              }
+            }
+            nIndex = n
+            commonList.push(list)
+          }
+        }
+        commonList.sort((arr1, arr2) => {
+          return arr2.length - arr1.length
+        })
+        return commonList[0]
+      }
     },
     showIndexContent(index) {
       this.nowIndex = index

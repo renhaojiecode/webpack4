@@ -46,6 +46,17 @@
  * 请求之后如何渲染，细节分西
  * header  body 自己了解多少
  * 简单讲解一下http2的多路复用
+ * 动态规划-爬楼梯(类斐波那契)【追问了时间复杂度度优化和空间复杂度优化】
+
+数组去重【禁用Set等API】
+
+大整数相加实现
+
+trim实现
+
+判断回文数【字符串法+取余累加法】
+
+对称二叉树判断【剑指offer原题】
  */
 export default {
   title: '基础知识 小技巧',
@@ -73,11 +84,111 @@ export default {
       ],
     },
     {
+      title: '前端技术栈',
+      img: [
+        '<img src="' + require('../img/big-fe.webp') + '" />',
+      ]
+    },
+    {
+      title: 'HTML 文档解析渲染过程',
+      desc: [
+        '浏览器解析HTML，构建DOM树',
+        '生成CSS规则树',
+        '构建渲染树render',
+        '回流和重绘',
+        '外链资源下载： \
+        <br>&nbsp;&nbsp; css资源：CSS下载时异步，不会阻塞浏览器构建DOM树；但是会阻塞渲染，也就是在构建render时，会等到css下载解析完毕后才进行（这点与浏览器优化有关，防止css规则不断改变，避免了重复的构建） \
+        <br>&nbsp;&nbsp; Js资源： 阻塞浏览器的解析（GUI渲染线程），也就是说发现一个外链脚本时，需等待脚本下载完成并执行后才会继续解析HTML；浏览器的优化，一般现代浏览器有优化，在脚本阻塞时，也会继续下载其它资源（当然有并发上限），但是虽然脚本可以并行下载，解析过程仍然是阻塞的，也就是说必须这个脚本执行完毕后才会接下来的解析，并行下载只是一种优化而已；defer(按顺序执行)与async，普通的脚本是会阻塞浏览器解析的，但是可以加上defer或async属性，这样脚本就变成异步了，可以等到解析完毕后再执行。',
+        'loaded和domcontentloaded:  \
+        <br>&nbsp;&nbsp; DOMContentLoaded 事件触发时，仅当DOM加载完成，不包括样式表，图片(譬如如果有async加载的脚本就不一定完成)\
+        <br>&nbsp;&nbsp; load 事件触发时，页面上所有的DOM，样式表，脚本，图片都已经加载完成了\
+        '
+      ]
+    },
+    {
+      title: '简述一下你对HTML语义化的理解',
+      jsCode: ``,
+      desc: [
+        '用正确的标签做正确的事情。',
+        'html语义化让页面的内容结构化，结构更清晰，便于对浏览器、搜索引擎解析;',
+        '即使在没有样式CSS情况下也以一种文档格式显示，并且是容易阅读的;',
+        '搜索引擎的爬虫也依赖于HTML标记来确定上下文和各个关键字的权重，利于SEO;',
+        '使阅读源代码的人对网站更容易将网站分块，便于阅读维护理解。',
+      ],
+    },
+    {
+      title: '什么是window对象? 什么是document对象?',
+      desc: [
+        'window对象是指浏览器打开的窗口。',
+        'document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性',
+        'documentElement --> html',
+      ]
+    },
+    {
+      title: 'JS this到底是什么？',
+      desc: [
+        'JS中的this是指函数运行时所处的环境（上下文）',
+        'Javascript 是一个词法作用域的语言, 就是说, 一个变量的作用域, 在写这个变量的时候确定; this 关键字是为了在 JS 中加入动态作用域而做的努力;所谓动态作用域, 就是说变量的作用范围, 是根据函数调用的位置而定的.从这个角度来理解 this, 就简单的多.',
+        '如果调用函数的是一个Object，this == Object',
+        '如果调用函数的是 null 或者 非引用类型，this == window (顶层对象 浏览器中是window。fn())',
+        '隐式绑定this：函数的独立调用 fn() 默认绑定this == window。但是严格模式下 隐式绑定不起作用 this == undefined',
+        'call apply bind new 都可以改变this指向 new的优先级最高。'
+      ]
+    },
+    {
       title: 'js 数据类型',
       jsCode: ``,
       desc: [
         'String Symbol Number Boolean undefined null Function Object',
       ],
+    },
+    {
+      title: 'Event Loop',
+      jsCode: ``,
+      desc: [
+        '浏览器端事件循环中的异步队列有两种：macro（宏任务）队列和 micro（微任务）队列。宏任务队列可以有多个，微任务队列只有一个。 \
+        <br>&nbsp;&nbsp; 常见的 macro-task 比如：setTimeout、setInterval、script（整体代码）、 I/O 操作、UI 渲染等。 \
+        <br>&nbsp;&nbsp; 常见的 micro-task 比如: new Promise().then(回调)、MutationObserver(html5新特性)、Process.nextTick（Node独有） 等。',
+        'Javascript单线程任务被分为同步任务和异步任务，同步任务会在调用栈中按照顺序等待主线程依次执行，异步任务会在异步任务有了结果后，将注册的回调函数放入任务队列中等待主线程空闲的时候（调用栈被清空），被读取到栈内等待主线程的执行。',
+        '执行栈 script(宏任务) ',
+        '同步代码执行，遇到异步代码 宏任务进入 宏任务队列，微任务进入微任务队列',
+        '执行栈script(宏任务)完成后， 检查微任务队列 并清空',
+        '从宏任务队列首部 获取任务进入执行栈，重复上述步骤 执行完 清空微任务队列。。。',
+        '清空任务队列之后进行渲染 更新界面',
+      ],
+    },
+    {
+      title: 'Event Loop Node',
+      jsCode: ``,
+      desc: [
+        'Node.js的运行机制如下:  \
+        <br>&nbsp;&nbsp; V8引擎解析JavaScript脚本。\
+        <br>&nbsp;&nbsp; 解析后的代码，调用Node API。\
+        <br>&nbsp;&nbsp; libuv库负责Node API的执行。它将不同的任务分配给不同的线程，形成一个Event Loop（事件循环），以异步的方式将任务的执行结果返回给V8引擎。\
+        <br>&nbsp;&nbsp; V8引擎再将结果返回给用户。',
+        'Node Event Loop 分6各阶段 \
+        <br>&nbsp;&nbsp; timers: 执行setTimeout和setInterval中到期的callback。 \
+        <br>&nbsp;&nbsp; pending callback: 上一轮循环中少数的callback会放在这一阶段执行。 \
+        <br>&nbsp;&nbsp; idle, prepare: 仅在内部使用。 \
+        <br>&nbsp;&nbsp; poll: 最重要的阶段，执行pending callback，在适当的情况下回阻塞在这个阶段。 \
+        <br>&nbsp;&nbsp; check: 执行setImmediate(setImmediate()是将事件插入到事件队列尾部，主线程和事件队列的函数执行完成之后立即执行setImmediate指定的回调函数)的callback。 \
+        <br>&nbsp;&nbsp; close callbacks: 执行close事件的callback，例如socket.on("close"[,fn])或者http.server.on("close", fn)。',
+      ],
+    },
+    {
+      title: '请描述一下 cookies，sessionStorage 和 localStorage 的区别？',
+      desc: [
+        'cookie是网站为了标示用户身份而储存在用户本地终端（Client Side）上的数据（通常经过加密）。',
+        'cookie数据始终在同源的http请求中携带（即使不需要），记会在浏览器和服务器间来回传递。',
+        'sessionStorage和localStorage不会自动把数据发给服务器，仅在本地保存。',
+        '存储大小：  \
+        <br>&nbsp;&nbsp; cookie数据大小不能超过4k。 \
+        <br>&nbsp;&nbsp; sessionStorage和localStorage 虽然也有存储大小的限制，但比cookie大得多，可以达到5M或更大。',
+        '有期时间：  \
+        <br>&nbsp;&nbsp; localStorage    存储持久数据，浏览器关闭后数据不丢失除非主动删除数据；\
+        <br>&nbsp;&nbsp; sessionStorage  数据在当前浏览器窗口关闭后自动删除。可以再同一个窗口间通信不能再多标签页间通信\
+        <br>&nbsp;&nbsp; cookie          设置的cookie过期时间之前一直有效，即使窗口或浏览器关闭',
+      ]
     },
     {
       title: '函数式编程 / 命令式编程',
@@ -162,7 +273,8 @@ var b = 10
       desc: [
         '防抖动Debounce 把触发非常频繁的事件（如按键）合并成一次执行。 就是等用户一定时间不触发这个动作时再去执行 最后执行。',
         '节流阀Throtting 节流是限制一定时间内动作只执行一次，过完这个时间再次执行。保证 X 毫秒恒定的执行次数（如每 200 毫秒检查下滚动位置，并触发 CSS 动画）。',
-        'requestAnimationFrame 保证在每个刷新间隔内函数只被执行一次，实现节流节能。'
+        'requestAnimationFrame 保证在每个刷新间隔内函数只被执行一次，实现节流节能。',
+        'input 输入中文时可以使用 compositionstart compositionend 来实现防抖。',
       ],
     },
     {
@@ -748,6 +860,22 @@ console.log(Object.keys(proxy)); // ['name', 'age']
         'B- 70≤得分<75 <br>&nbsp; 工作成果整体达标，有部分达到目标预期/岗位要求，需要提高',
         'C 60≤得分<70 <br>&nbsp; 工作成果未达到目标预期/岗位要求，存在一些差距，存在一定改进空间',
         'D 0≤得分<60 <br>&nbsp; 工作成果未达到目标预期/岗位要求，存在明显差距',
+      ],
+    },
+    {
+      title: 'npm install 如何安装模块的',
+      jsCode: ``,
+      desc: [
+        '过程总结：  \
+        <br>&nbsp;&nbsp; 1、发出npm install命令  \
+        <br>&nbsp;&nbsp; 2、npm 向 registry 查询模块压缩包的网址  \
+        <br>&nbsp;&nbsp; 3、下载压缩包，存放在~/.npm目录  \
+        <br>&nbsp;&nbsp; 4、解压压缩包到当前项目的node_modules目录',
+        'npm install 命令用来安装模块到node_modules目录。安装之前，npm install会先检查，node_modules目录之中是否已经存在指定模块。如果存在，就不再重新安装了，即使远程仓库已经有了一个新版本，也是如此。-f 可以强制安装',
+        'npm update 会先到远程仓库查询最新版本，然后查询本地版本。如果本地版本不存在，或者远程版本较新，就会安装。',
+        'npm update命令怎么知道每个模块的最新版本呢？<br/>答案是 npm 模块仓库提供了一个查询服务，叫做 registry 。以 npmjs.org 为例，它的查询服务网址是 https://registry.npmjs.org/{{packageName}} 。',
+        'registry 会返回一个json对象包含 package 的信息包括版本 dist.tarball(压缩包地址)，到tarball下载压缩包，在本地解压，就得到了模块的源码放入npm_modules。npm install和npm update命令，都是通过这种方式安装模块的。',
+        'npm install或npm update命令，从 registry 下载压缩包之后，都存放在本地的缓存目录。通过npm config get cache 可查看',
       ],
     },
     // {

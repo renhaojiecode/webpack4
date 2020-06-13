@@ -30,6 +30,7 @@ a = new Promise( async (resolve) => {
 console.log('end')
 /* promise1 / undefined / end / promise2 / promise3 / promise4 / Promise{<pending>} / after1 */`,
       desc: [
+        'async函数返回一个 Promise 对象',
         'await 命令只能用在 async 函数之中',
         'await 返回 后边的 Promise 的 resolve 值即:res / 如果不是Promise 对象 会自动转成立即 resolved 的 Promise 对象',
         'await 后边的 Promise 对象出错或reject 会阻断后边的执行 可以用 async 的catch 或 Promise 的catch处理 放在try catch也行'

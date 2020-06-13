@@ -3,6 +3,23 @@ export default {
   name: '', // 暂未使用保留字段
   content: [
     {
+      title: '一个页面从输入 URL 到页面加载显示完成，这个过程中都发生了什么？',
+      desc: [
+        'http://www.dailichun.com/2018/03/12/whenyouenteraurl.html',
+        '1. DNS解析  \
+        <br>&nbsp;&nbsp; 2. TCP连接 \
+        <br>&nbsp;&nbsp; 3. 发送HTTP请求 \
+        <br>&nbsp;&nbsp; 4. 服务器处理请求并返回HTTP报文 \
+        <br>&nbsp;&nbsp; 5. 浏览器解析渲染页面 \
+        <br>&nbsp;&nbsp; 6. 连接结束',
+        '1.如果页面使用强缓存，并且缓存未过期，使用本地缓存',
+        '2.域名解析（DNS）获取相应的ip',
+        '3.进行TCP连接（三次握手） 连接成功 发送HTTP请求',
+        '4.请求经过应用层，传输层，网络层，数据链路层，物理层，最终将数据送到目的主机的目的端口',
+        '5.服务器收到请求，在服务器空间中查找对应的资源，返回HTTP相应',
+      ]
+    },
+    {
       title: 'a === 3 && a === 4',
       jsCode: `window.a = 0;
 var n = 3;
@@ -34,6 +51,58 @@ console.log(_aN == 3 && _aN == 4)
       img: [
         // '<img src="' + require('../img/async-await.jpg') + '"/>',
       ]
+    },
+    {
+      title: '下面代码中 a 在什么情况下会打印 1？',
+      jsCode: `
+// 考察隐式类型转换
+var a = ?;
+if(a == 1 && a == 2 && a == 3){
+  console.log(1);
+}
+// 解法 一  a = console.log(1)
+(function() {
+  var a = console.log(1);
+  if(a == 1 && a == 2 && a == 3){
+    console.log(1);
+  }
+})()
+// 解法 二  a = [1, 2, 3]; a.toString = a.shift || a.join = a.shift
+(function() {
+  var a = [1, 2, 3];
+  a.toString = a.shift
+  if(a == 1 && a == 2 && a == 3){
+    console.log(1);
+  }
+})()
+// 解法 三  a = {num: 0}; toString / valueOf
+(function() {
+  var a = {
+    num: 0,
+    valueOf() {
+      return ++a.num
+    }
+  };
+  if(a == 1 && a == 2 && a == 3){
+    console.log(1);
+  }
+})()
+// 解法 四  a = {num: 0}; Symbol.toPrimitive
+(function() {
+  var a = {
+    num: 0,
+    [Symbol.toPrimitive]: function() {
+      return ++a.num
+    }
+  };
+  if(a == 1 && a == 2 && a == 3){
+    console.log(1);
+  }
+})()
+`,
+      desc: [
+        '',
+      ],
     },
     {
       title: 'promise.then(fn1, fn2) 和 promise.then(fn1).catch(fn2) 的区别？',
@@ -129,7 +198,7 @@ console.log('end')
 /* promise1 / undefined / end / promise2 / promise3 / promise4 / Promise{<pending>} / after1 */`,
       desc: [
         'await 命令只能用在 async 函数之中',
-        'await 返回 后边的 Promise 的 resolve 值即:res / 如果不是Promise 对象 就直接返回对应的值',
+        'await 返回 后边的 Promise 的 resolve 值即:res / 如果不是Promise 对象 会执行Promise.resolve(n) 包装成一个promise对象',
         'await 后边的 Promise 对象出错或reject 会阻断后边的执行 可以用 async 的catch 或 Promise 的catch处理 放在try catch也行'
       ],
     },
@@ -360,6 +429,117 @@ class Events{
       ],
     },
     {
+      title: '观察者模式 / 发布订阅模式',
+      jsCode: `
+// 观察者模式
+function Target() {
+  this.wList = []
+}
+Target.prototype.addW = function(wcb) {
+  if (this.wList.includes(wcb)) return
+  this.wList.push(wcb)
+}
+Target.prototype.removeW = function(wcb) {
+  if (!this.wList.includes(wcb)) return
+  this.wList = this.wList.filter(val => {
+    return val != wcb
+  })
+}
+Target.prototype.tellW = function(newVal) {
+  this.wList.forEach(wcb => {
+    wcb(newVal, this)
+  })
+}
+Function.prototype.wTarget = function(target) {
+  target.addW(this)
+  return this
+}
+Function.prototype.cancelWTarget = function(target) {
+  target.removeW(this)
+  return this
+}
+let t1 = new Target()
+let t2 = new Target()
+function w1(val, target) {
+  console.log('w1', val, target.name)
+}
+function w2(val, target) {
+  console.log('w2', val, target.name)
+}
+w1.wTarget(t1).wTarget(t2)
+w2.wTarget(t1)
+let parent = document.querySelector('body')
+let oDiv1 = document.createElement('div')
+let oDiv2 = document.createElement('div')
+oDiv1.style = 'background: red; width: 50px; height: 50px; margin: 0 auto;'
+oDiv2.style = 'background: blue; width: 50px; height: 50px; margin: 0 auto;'
+parent.insertBefore(oDiv1, parent.children[0])
+parent.insertBefore(oDiv2, parent.children[0])
+let n = 0
+oDiv1.onclick = function() {
+  n++
+  t1.tellW(n + 't1new')
+}
+oDiv2.onclick = function() {
+  n++
+  t2.tellW(n + 't2new')
+}
+
+// 发布订阅模式
+class medium {
+  constructor() {
+    this.reserveMap = {}
+  }
+  addReserve(type, fn) {
+    let list = this.reserveMap[type] ? this.reserveMap[type] : []
+    list.push(fn)
+    this.reserveMap[type] = list
+  }
+  removeReserve(type, fn) {
+    if (!fn) {
+      this.reserveMap[type] = []
+      return
+    }
+    let list = this.reserveMap[type] ? this.reserveMap[type] : []
+    this.reserveMap[type] = list.filter(cb => {
+      return cb != fn
+    })
+  }
+  tellReserve(type, ...args) {
+    let list = this.reserveMap[type] ? this.reserveMap[type] : []
+    list.forEach(cb => {
+      cb(...args)
+    })
+  }
+}
+let m1 = new medium()
+m1.addReserve('click', (...args) => {
+  console.log('click1', args)
+})
+m1.addReserve('mousemove', (...args) => {
+  console.log('mousemove1', args)
+})
+m1.tellReserve('mousemove', 1, 2)
+m1.tellReserve('click', 3)
+m1.removeReserve('click')
+`,
+      desc: [
+        '观察者模式:  \
+        <br>&nbsp;&nbsp; 有观察者们 和 目标对象 观察者观察目标对象(比如投简历) 目标对象 发布信息通知观察者(约面试) \
+        <br>&nbsp;&nbsp; 目标对象有 通知 添加 删除能力 观察者有接受通知并处理的能力  \
+        <br>&nbsp;&nbsp; 优点明显：降低耦合，两者都专注于自身功能；缺点也很明显：所有观察者都能收到通知，无法过滤筛选；',
+        '发布订阅模式:  \
+        <br>&nbsp;&nbsp; 有订阅者 发布者 中介，比如dom事件监听 就是典型的发布订阅模式 \
+        <br>&nbsp;&nbsp; 基于一个事件（主题）通道，希望接收通知的对象 Subscriber 通过自定义事件订阅主题，被激活事件的对象 Publisher 通过发布主题事件的方式通知各个订阅该主题的 Subscriber 对象。 \
+        <br>&nbsp;&nbsp; 优点：解耦更好，细粒度更容易掌控；缺点：不易阅读，额外对象创建，消耗时间和内存（很多设计模式的通病）',
+        '发布订阅模式更灵活，是进阶版的观察者模式，指定对应分发。  \
+        <br>&nbsp;&nbsp; 1.观察者模式维护单一事件对应多个依赖该事件的对象关系；\
+        <br>&nbsp;&nbsp; 2.发布订阅维护多个事件（主题）及依赖各事件（主题）的对象之间的关系；\
+        <br>&nbsp;&nbsp; 3.观察者模式是目标对象直接触发通知（全部通知），观察对象被迫接收通知。发布订阅模式多了个中间层（事件中心），由其去管理通知广播（只通知订阅对应事件的对象）；\
+        <br>&nbsp;&nbsp; 4.观察者模式对象间依赖关系较强，发布订阅模式中对象之间实现真正的解耦。'
+      ],
+    },
+    {
       title: '深度优先遍历DFS / 广度优先遍历BFS',
       jsCode: `
 // 深度优先遍历
@@ -394,6 +574,195 @@ function bfs(node) {
         '广度优先：从顶点开始，找到一个节点后，把他同级的兄弟节点都找出来放在前边，把孩子放到后边，最常用 while',
       ],
       img: []
+    },
+    {
+      title: 'Ajax 手写',
+      jsCode: `
+let vkajax = function(para) {
+  // IE9跨域请求
+  if (navigator.appName === "Microsoft Internet Explorer" && /MSIE 9/i.test(navigator.appVersion)){
+    try {
+      let xdr = new XDomainRequest()
+      xdr.open(para.type, para.url)
+      xdr.onload = function () {
+        para.success()
+      }
+      xdr.onprogress = function(){ };
+      xdr.ontimeout = function(){ };
+      xdr.onerror = function() {
+        para.error()
+      }
+      setTimeout(function(){
+        xdr.send(para.data || null)
+      }, 0);
+    }catch (e) {
+      console.log(e)
+    }
+  }else {
+    try {
+      let xhr = new XMLHttpRequest()
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+          if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 304) {
+            para.success(getJSON(xhr.responseText))
+          } else {
+            para.error(getJSON(xhr.responseText), xhr.status)
+          }
+          xhr.onreadystatechange = null
+        }
+      }
+      xhr.open(para.type, para.url, true)
+      xhr.send(para.data || null)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  function getJSON(data) {
+    try {
+      return JSON.parse(data)
+    } catch (e) {
+      return {}
+    }
+  }
+}
+`
+    },
+    {
+      title: 'ES6 代码转成 ES5 代码的实现思路是什么',
+      jsCode: ``,
+      desc: [
+        '语法转换： \
+        <br>&nbsp;&nbsp; 1.将ES6代码字符串解析成抽象语法树，即所谓的 AST \
+        <br>&nbsp;&nbsp; 2.将ES6 AST 转换为 ES5 AST \
+        <br>&nbsp;&nbsp; 3.ES5 AST 再生成代码字符串',
+        'API转换 实现各种polyfill',
+      ],
+    },
+    {
+      title: '输出结果',
+      jsCode: `
+1 + "1"
+// '11'
+2 * "2"
+// 4
+[1, 2] + [2, 1]
+// toString() 1,22,1
+"a" + + "b"
+// "a" + + "b" -> 'a' + (+'b') +作为一元运算符 会执行 Number()
+// "a" + NaN  "aNaN"`,
+      desc: [
+        '',
+      ],
+    },
+    {
+      title: '要求设计 LazyMan 类，实现以下功能',
+      jsCode: `
+LazyMan('Tony').eat('lunch').eat('dinner').sleepFirst(5).sleep(10).eat('junk food');
+// Hi I am Tony
+// 等待了5秒...
+// I am eating lunch
+// I am eating dinner
+// 等待了10秒...
+// I am eating junk food
+
+function LazyMan(name) {
+  let obj = new CFn(name)
+  return obj
+}
+function CFn(name) {
+  this.ok = false
+  this.cbList = []
+  console.log('Hi I am ' + name)
+}
+CFn.prototype.start = function() {
+  if (!this.ok) {
+    this.ok = true
+    Promise.resolve().then(() => {
+      this.cbList.length && this.cbList[0]()
+    })
+  }
+}
+CFn.prototype.cbFn = function(cb, first = false) {
+  this.start()
+  if (!first) {
+    this.cbList.push(boxCb.bind(this))
+  } else {
+    this.cbList.unshift(boxCb.bind(this))
+  }
+  function boxCb() {
+    cb().then(() => {
+      this.cbList.splice(0, 1)
+      this.cbList.length && this.cbList[0]()
+      !this.cbList.length && (this.ok = false)
+    })
+  }
+}
+CFn.prototype.eat = function(eat) {
+  this.cbFn(function() {
+    return Promise.resolve(console.log('I am eating ' + eat))
+  })
+  return this
+}
+CFn.prototype.sleep = function(time) {
+  this.cbFn(function() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(console.log('等待了' + time + '秒...'))
+      }, time * 1000);
+    })
+  })
+  return this
+}
+CFn.prototype.sleepFirst = function(time) {
+  this.cbFn(function() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(console.log('等待了' + time + '秒...'))
+      }, time * 1000);
+    })
+  }, true)
+  return this
+}
+let obj = LazyMan('Tony').eat('lunch').eat('dinner').sleepFirst(2).sleep(5).eat('junk food');
+setTimeout(() => {
+  obj.eat('lunch').eat('dinner').sleepFirst(2).sleep(5).eat('junk food');
+}, 8000);
+`,
+      desc: [
+        '',
+      ],
+    },
+    {
+      title: '随机生成一个 长度 10 的整数数组，然后如例子所示：',
+      jsCode: `
+// exp: [2, 10, 3, 4, 5, 11, 10, 11, 20]，将其排列成一个新数组，要求新数组形式如下，例如 [[2, 3, 4, 5], [10, 11], [20]]。
+console.log(changeArr([2, 10, 3, 4, 5, 11, 10, 11, 20]))
+let arrR = getRandomArr(10, 50)
+console.log(arrR)
+console.log(changeArr(arrR))
+function getRandomArr(n, max, min = 0) {
+  let arr = []
+  for (let i = 0; i < n; i++) {
+    arr.push((Math.floor(Math.random() * (max - min) + min)))
+  }
+  return arr
+}
+function changeArr(arr) {
+  let list = []
+  let onlyArr = [...new Set(arr)]
+  onlyArr.forEach((val) => {
+    let index = Math.floor(val / 10)
+    !list[index] && (list[index] = [])
+    list[index].push(val)
+  })
+  return list.map(val => {
+    return !val ? [] : val.sort((a1, a2) => {return a1 - a2})
+  })
+}
+`,
+      desc: [
+        '',
+      ],
     },
     // {
     //   title: '',

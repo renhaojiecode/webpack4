@@ -1,3 +1,52 @@
+后续准备
+  稳定性建设：
+    1、机器备份 页面404 在阿里云和腾讯云两套服务器 如果请求资源时服务器访问资源404就切换到别的资源
+    2、页面静态资源404 在页面统一监听 onerror 如果是静态资源404就切换备份静态资源地址
+
+  性能优化：
+    1、静态资源多域名部署、可以解决
+      首先是使用不同域名可以再访问资源时不携带cookie 加快访问速度，
+      浏览器对于同域名资源访问数量的限制，
+      同时可以对这些域名做DNS预解析，
+    2、非首页展示资源 懒加载
+    3、开启 gzip压缩  content-encoding: gzip
+    4、http 升级 1.1可以进行长连接 Connection: keep-alive； HTTP2.0 可以进行多路复用
+    5、开启缓存 Cache-Control 强缓存  If-None-Match/E-tag 协商缓存
+    6、代码层面可以：
+      js外链资源放在body底部
+      修改样式是最好 定义class进行修改 避免多次渲染
+      缓存一些获取的值 比如offsetTop等
+      采用虚拟dom
+  服务端渲染：ssr   框架 nuxt.js
+    // PC站 项目中的高峰期 使用ssr渲染
+    更快 一个方面是 服务器内网访问没有带宽限制速度快，并且可以进行缓存
+    1、两套页面、如果服务端渲染资源获取失败  就要切换客户端渲染。
+    2、ssr 缓存 对于多用户访问 相同的部分只渲染一次 不同的用户信息重新获取。
+    3、更好的 SEO，由于搜索引擎爬虫抓取工具可以直接查看完全渲染的页面。
+
+  跨域之cors：
+    1、对于主域下不同子域 资源访问 cookie 带不过去的跨域问题
+      Access-Control-Allow-Origin
+      Access-Control-Allow-Headers
+    2、简单请求、复杂请求（options 预检）
+
+  local file方案：
+    1、采用 把资源打包 进app 用户访问时直接访问客户端本地文件
+      这样的遇到的问题：
+        1、域名问题 无法解决 本地资源域名跟主站不一致
+        2、cookie 等问题
+    2、优化方案采用 正常加载html 打包静态资源进app 方式 用户请求静态资源域名时进行拦截 校验是否有本地资源 如果没有就发起请求并进行缓存（同时删除过期资源）
+
+简历
+  突出自己做了什么 ，独立思考能力
+  不要写太多 git vue全家桶之类的
+  不要全写业务性的
+  与UI UE 一起推动项目长流程项目简化
+
+准备面试公司
+  1.作业帮，每日优鲜，跟谁学，京东数科，小米
+  2.好未来（学而思），猿辅导，京东方 
+  3.头条，百度，滴滴，美团
 HR question
   5、咱们招人的原因是什么
   6、咱们前端团队有多少人
@@ -8,10 +57,12 @@ HR question
   4、上班时间、地点 是否双休
   
 职业规划
-  
+  工程化、node、
 离职原因
   在kid呆了快三年了， 想换一个环境
-
+优缺点
+  优点 工作认真
+  缺点 不太会争取机会、 大胆改变 和 做技术储备 任务自然会分配给你
 工作遇到的问题  如何解决的
   0、页面返回后的刷新问题
     如果只需要监听到这个事件 app内使用 app提供的pageshow方法
@@ -24,37 +75,50 @@ HR question
       在用户点击搜索时隐藏一个input在按钮上 这样可以获得用户点击权限 成功唤起键盘
       该方法比较hack
 最近在研究什么
-  研究了一下 rem和px那个好
+  研究了一下 rem和px那个好   snowpack / vite  vue 3.0  http3.0
 
-HTML&CSS：
-	对Web标准的理解（结构、表现、行为）、浏览器内核、渲染原理、依赖管理、兼容性、CSS语法、层次关系，常用属性、布局、选择器、权重、盒模型、
-	Hack、CSS预处理器、CSS3、Flexbox、CSS Modules、Document flow、BFC、HTML5（离线 & 存储、Histoy,多媒体、WebGL\SVG\Canvas）；		
-JavaScript：
-    数据类型、运算、对象、Function、继承、闭包、作用域、事件、Prototype、RegExp、JSON、Ajax、DOM、BOM、
-    内存泄漏、跨域、异步请求、模板引擎、模块化、Flux、同构、算法、ECMAScript6、Nodejs、HTTP、
+作业帮技术岗***
+MVVM框架的理解 *****没答上来
+vue router  history 和 hash 模式的区别
+vue 组件懒加载 加载过的不再重复加载
+首页白屏时间 缩短
+对 哪些 webpack  plugin 有深入研究
+this 的理解 感觉答的不太好 需要重新组织语言
+event loop 需要重新组织语言  先讲异步同步 再讲 微任务宏任务
+作业帮业务岗****
+在  data 中实现一个 数据对象 不需要变更 不需要被监听？？？
+3面 leader 2面官还可以（离地铁挺近）其他一般  期望30k 实际未回复
 
-其他：
-    主流MVVM框架(React\Vue\Angular)、Hybrid App\React Native\Weex、TypeScript、RESTFul、WEB安全、前端工程化、依赖管理、性能优化、
-    重构、团队协作、可维护、易用性、SEO、UED、前端技术选型、快速学习能力等；
+跟谁学面试*****
+用户增长 中台 双休 早9点晚9点 团队12人 leader注重团队分享
+http 缓存
+http2.0 多路复用 和 1.1 的区别 输出格式是什么
+node 是否熟悉
+node eventLoop
+async await 混合 promise 考察
+手写 多请求限制最大并发 函数
+vue router 懒加载 原理
+module 语法 和 commonJS 区别 执行时机 / 引入的是否是动态
+正方形 对角线实现  after / 渐变色
+vue 3.0 新特性
+nginx 配置是否了解
+二面**
+拥塞控制
+options 请求
+vue 新特性 实现原理
+如何实现ui组件单元测试 覆盖不同手机型号、不同状态
+webpack  优化
+二分法快排  时间复杂度
+babel 实现过程 字符串转ES6抽象语法树 转 ES5抽象语法树 转字符串输出 API 用 polyfill
 
-记录一些知识点
-手写bind 函数 https://github.com/Raynos/function-bind/blob/master/implementation.js
-手写promise 
-定时器为什么不准
-let、const和var的区别 
-闭包介绍和它的作用
-数组去重、扁平化、柯里化 
-回文字符串 
-尾调用优化
+
+新东方*****
+集团IT部****
+产品技术中心***
 
 
-- `for...in`循环：只遍历对象自身的和继承的可枚举的属性。
-- `Object.keys()`：返回对象自身的所有可枚举的属性的键名。
+好未来****
 
-IOS UIWebView  Andriod  webkit 内核（4.4之前） Chromium 内核
-
-CSRF  XSS
-跨站请求伪造（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。跟跨网站脚本（XSS）相比，XSS 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。
 
 
 
@@ -164,15 +228,7 @@ CommonJS AMD Module
 
 
 
-Vue
-  style scoped  可以这样使作用于子组件
-  .a >>> .b { /* ... */ }
 
-
-1、捕获和冒泡
-  被点击节点 先绑定先执行
-  先捕获从上到下
-  后冒泡从下到上
 
 
 S 95≤得分≤100
