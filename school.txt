@@ -24,18 +24,13 @@
     2、ssr 缓存 对于多用户访问 相同的部分只渲染一次 不同的用户信息重新获取。
     3、更好的 SEO，由于搜索引擎爬虫抓取工具可以直接查看完全渲染的页面。
 
-  跨域之cors：
-    1、对于主域下不同子域 资源访问 cookie 带不过去的跨域问题
-      Access-Control-Allow-Origin
-      Access-Control-Allow-Headers
-    2、简单请求、复杂请求（options 预检）
-
   local file方案：
     1、采用 把资源打包 进app 用户访问时直接访问客户端本地文件
       这样的遇到的问题：
         1、域名问题 无法解决 本地资源域名跟主站不一致
         2、cookie 等问题
     2、优化方案采用 正常加载html 打包静态资源进app 方式 用户请求静态资源域名时进行拦截 校验是否有本地资源 如果没有就发起请求并进行缓存（同时删除过期资源）
+  
 
 简历
   突出自己做了什么 ，独立思考能力
@@ -45,8 +40,9 @@
 
 准备面试公司
   1.作业帮，每日优鲜，跟谁学，京东数科，小米
-  2.好未来（学而思），猿辅导，京东方 
-  3.头条，百度，滴滴，美团
+  2.好未来（学而思），京东方 
+  3.滴滴，快手，贝壳，百度，
+  4.猿辅导，头条，美团
 HR question
   5、咱们招人的原因是什么
   6、咱们前端团队有多少人
@@ -55,6 +51,7 @@ HR question
   2、多少薪
   3、房补饭补等
   4、上班时间、地点 是否双休
+
   
 职业规划
   工程化、node、
@@ -75,7 +72,7 @@ HR question
       在用户点击搜索时隐藏一个input在按钮上 这样可以获得用户点击权限 成功唤起键盘
       该方法比较hack
 最近在研究什么
-  研究了一下 rem和px那个好   snowpack / vite  vue 3.0  http3.0
+  研究了一下 rem和px那个好   snowpack / vite  vue 3.0  http3.0  PWA (service worker + https / cache API / indexDB https://www.jianshu.com/p/098af61bbe04)
 
 作业帮技术岗***
 MVVM框架的理解 *****没答上来
@@ -89,36 +86,64 @@ event loop 需要重新组织语言  先讲异步同步 再讲 微任务宏任�
 在  data 中实现一个 数据对象 不需要变更 不需要被监听？？？
 3面 leader 2面官还可以（离地铁挺近）其他一般  期望30k 实际未回复
 
-跟谁学面试*****
-用户增长 中台 双休 早9点晚9点 团队12人 leader注重团队分享
-http 缓存
-http2.0 多路复用 和 1.1 的区别 输出格式是什么
-node 是否熟悉
-node eventLoop
-async await 混合 promise 考察
-手写 多请求限制最大并发 函数
-vue router 懒加载 原理
-module 语法 和 commonJS 区别 执行时机 / 引入的是否是动态
-正方形 对角线实现  after / 渐变色
-vue 3.0 新特性
-nginx 配置是否了解
-二面**
-拥塞控制
-options 请求
-vue 新特性 实现原理
-如何实现ui组件单元测试 覆盖不同手机型号、不同状态
-webpack  优化
-二分法快排  时间复杂度
-babel 实现过程 字符串转ES6抽象语法树 转 ES5抽象语法树 转字符串输出 API 用 polyfill
+跟谁学面试***** 
+  用户增长 中台 双休 早9点晚9点 团队12人 leader注重团队分享
+  http 缓存
+  http2.0 多路复用 和 1.1 的区别 输出格式是什么
+  node 是否熟悉
+  node eventLoop
+  async await 混合 promise 考察
+  手写 多请求限制最大并发 函数
+  vue router 懒加载 原理
+  module 语法 和 commonJS 区别 执行时机 / 引入的是否是动态
+  正方形 对角线实现  after / 渐变色
+  vue 3.0 新特性
+  nginx 配置是否了解
+二面******
+  拥塞控制
+  options 请求
+  vue 新特性 实现原理
+  如何实现ui组件单元测试 覆盖不同手机型号、不同状态
+  webpack  优化
+  二分法快排  时间复杂度
+  babel 实现过程 字符串转ES6抽象语法树 转 ES5抽象语法树 转字符串输出 API 用 polyfill
+三面****** 17号 下午三点  D1-20F-H-6
+  团队 100+ 前端 十几个 有分享
+  hr 问题太多 没给明确说法
 
 
 新东方*****
-集团IT部****
-产品技术中心***
+集团IT部**** 20-35  诺丁汉大学  D1-17F-H-2
+  用户中心 - 2 加班 项目大概一年半开发量
+  cookie  samesite  httponly
+产品技术中心*** 25-50
 
 
 好未来****
 
+
+滴滴*****  Rlab
+  6.22 14：00
+  是否会被渲染 mounted不会被渲染 会报错
+    created
+      this.text1 = 'text1'
+    mounted
+      this.text2 = 'text2'
+  data props computed watch 区别
+  cookie 为什么登陆信息中在cookie
+  cookie storage 区别
+  在跨域时 如何携带cookie  withCredentials: true
+  this 的相关题
+  event loop 相关题
+  仿写set
+二面***
+  6.23 15：00  823-219-0278‬  https://zoom.com.cn/join
+三面***
+  6.23 17：00  433977039
+  海外外卖 国际化
+  
+贝壳***** 
+  6.24 15：00
 
 
 

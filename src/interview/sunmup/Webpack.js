@@ -41,5 +41,14 @@ export default {
       ],
       img: []
     },
+    {
+      title: '热更新模块 HMR',
+      jsCode: ``,
+      desc: [
+        '利用 websocket 双向通讯的能力 获取更新并通知页面更新',
+        '<br>&nbsp;&nbsp;>>  ',
+      ],
+      img: []
+    },
   ]
 }

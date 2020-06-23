@@ -150,6 +150,17 @@ export default {
       ],
     },
     {
+      title: 'CORS',
+      jsCode: ``,
+      desc: [
+        '对于主域下不同子域 资源访问 cookie 带不过去的跨域问题 \
+        <br>&nbsp;&nbsp;>> Access-Control-Allow-Origin \
+        <br>&nbsp;&nbsp;>> Access-Control-Allow-Headers ',
+        '简单请求、复杂请求（options 预检）',
+        'withCredentials: true 可以再跨域时携带cookie',
+      ],
+    },
+    {
       title: 'TCP',
       desc: [
         'TCP 拥塞控制 为了避免过多数据涌入网络，使网络超出负荷。\
@@ -164,11 +175,8 @@ export default {
       desc: [
         // http://www.dailichun.com/2018/03/12/whenyouenteraurl.html
         '强缓存（200 from cache）时，浏览器如果判断本地缓存未过期，就直接使用，无需发起http请求',
-        '协商缓存（304）时，浏览器会向服务端发起http请求 通过Etag进行文件过期校验，然后服务端告诉浏览器文件未改变，让浏览器使用本地缓存',
+        '协商缓存（304）时(if-none-match & Etag || Last-Modified & If-Modified-Since秒级)，浏览器会向服务端发起http请求 通过Etag进行文件过期校验，然后服务端告诉浏览器文件未改变，让浏览器使用本地缓存',
         '对于协商缓存，使用Ctrl + F5强制刷新可以使得缓存无效。但是对于强缓存，在未过期时，必须更新资源路径才能发起新的请求（更改了路径相当于是另一个资源了，这也是前端工程化中常用到的技巧）',
-        '',
-        '',
-        '',
       ],
       img: [
         '<img src="' + require('../img/http_cache.png') + '" />',

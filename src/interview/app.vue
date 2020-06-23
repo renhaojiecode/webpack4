@@ -62,8 +62,18 @@ import webpack from './sunmup/Webpack.js'
 import http from './sunmup/http.js'
 import codeSpeedUp from './sunmup/code-speed-up.js'
 
+// import testVue from './components/test.vue'
+
 export default {
+  components: {
+    // testVue,
+  },
   data() {
+    // 不会被vue监听
+    this.obj = {
+      text: 1,
+      name: 'obj'
+    }
     return {
       nowIndex: location.hash.replace('#', '') - 0,
       sumUpList: [
@@ -80,6 +90,9 @@ export default {
         eslint,
       ],
     }
+  },
+  created() {
+    // this.text1 = 'hahah1'
   },
   mounted() {
     this.init()
@@ -117,6 +130,9 @@ export default {
         })
         return commonList[0]
       }
+      setTimeout(() => {
+        this.text1 = 'hahah'
+      }, 3000)
     },
     showIndexContent(index) {
       this.nowIndex = index

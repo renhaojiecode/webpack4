@@ -73,7 +73,7 @@ export default {
       title: 'JavaScript：',
       jsCode: ``,
       desc: [
-        '数据类型、运算、对象、Function、继承、闭包、作用域、事件、Prototype、RegExp、JSON、Ajax、DOM、BOM、内存泄漏、跨域、异步请求、模板引擎、模块化、Flux、同构、算法、ECMAScript6、Nodejs、HTTP、',
+        '数据类型、运算、对象、Function、继承、闭包、作用域、事件、Prototype、RegExp、JSON、Ajax、DOM、BOM、内存泄漏、跨域、异步请求、模板引擎、模块化、Flux、同构、算法、ECMAScript6、Nodejs、HTTP、postMessage、local storage、webWorker、service workers',
       ],
     },
     {
@@ -122,6 +122,19 @@ export default {
         'window对象是指浏览器打开的窗口。',
         'document对象是Documentd对象（HTML 文档对象）的一个只读引用，window对象的一个属性',
         'documentElement --> html',
+      ]
+    },
+    {
+      title: '浏览器缓存分类',
+      desc: [
+        'https://juejin.im/post/5c22ee806fb9a049fb43b2c5?utm_source=gold_browser_extension#comment',
+        '按缓存位置分类 (memory cache, disk cache, Service Worker 等)',
+        '按失效策略分类 (Cache-Control, ETag 等)',
+        'service workers 通过worker实现 前端控制什么文件缓存 在若网环境，和无网环境 以及PWA技术上有很好的帮助',
+        'memory cache 内存缓存(可以使用 no-store 禁止) 几乎所有的网络请求资源都会被浏览器自动加入到 memory cache 中。是短期缓存，如果内存占用过多前边的会失效。如果页面有两个相同的资源请求（类型 / CORS中的域名规则 也要相同 script 和 img src一致也不会认为是一个资源）只会被请求一次避免浪费。',
+        'disk cache （ HTTP cache）详情请参考 强缓存 / 协商缓存',
+        '最后进行 网络请求 fetch',
+        '总结：对不同的资源使用对应的 缓存机制可以提高用户体验、页面加载速度等。 缓存 使用时要注意不要混用 强缓存和协商缓存 因为如果 js资源过期了 / 或者被浏览器清理了(公用base.js 很容易和 页面资源不一起被缓存) 但此时 html 依然走缓存就很危险。'
       ]
     },
     {
@@ -839,7 +852,8 @@ console.log(Object.keys(proxy)); // ['name', 'age']
         +oDate.toUTCString();  \
         <br>&nbsp;&nbsp;>>  username=value; 设置的cookie 名和值 \
         <br>&nbsp;&nbsp;>>  expires 有效日期（UTC 时间） 时间设置成过去的时间就可以删除cookie \
-        <br>&nbsp;&nbsp;>>  path cookie属于什么路径 同一网站使用 / 更方便  ',
+        <br>&nbsp;&nbsp;>>  path cookie属于什么路径 同一网站使用 / 更方便  \
+        <br>&nbsp;&nbsp;>>  httponly 不能被js获取保证其安全性 防止xss攻击 ',
         '***  SameSite 属性单独介绍  Strict / Lax / None 三个值 \
         <br>&nbsp;&nbsp;>>  是chrome 新加的一个属性，用来防止 CSRF 攻击和用户追踪。  \
         <br>&nbsp;&nbsp;>>  Strict 完全禁止第三方 Cookie，跨站点时，任何情况下都不会发送 Cookie。换言之，只有当前网页的 URL 主域 与请求目标一致，才会带上 Cookie。 太过严格一般不会使用  \

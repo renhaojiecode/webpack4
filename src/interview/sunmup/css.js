@@ -26,7 +26,15 @@ export default {
         <br>&nbsp;&nbsp;  非块级盒子：inline-blocks、table-cells、table-captions \
         <br>&nbsp;&nbsp;  块级盒子：overflow 值不为 visible',
       ],
-      img: []
+    },
+    {
+      title: '遇到符号英文时的折行问题',
+      jsCode: `
+// 解决 display: table-cell 遇到符号英文时的折行问题
+table-layout: fixed
+word-wrap: break-word
+word-break: break-all
+`,
     },
     // {
     //   title: '',
