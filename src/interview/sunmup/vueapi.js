@@ -36,6 +36,38 @@ style scoped  可以这样使作用于子组件
 `
     },
     {
+      title: 'vue router host 和 history 模式的区别',
+      desc: [
+        'host 是默认模式 但是连接中会带有 # 号  有些分享到第三方app 等情况有可能会存在过滤导致的问题',
+        'mode: history, 开启history 模式  通过 history.pushState() 实现页面地址变更 能前进和后退但是不刷新。通过 onpopstate 来监听前进后退',
+        '区别 host 模式有#号，history 模式在进行多级path时刷新页面会404 需要通过ng等配置 重定向到 首页。',
+      ]
+    },
+    {
+      title: 'computed watch 的区别',
+      desc: [
+        'computed 有缓存  当依赖有更新 时 并且在下次访问时才计算新的值 （vue computed的最终计算结果 变化才会触发渲染）',
+      ]
+    },
+    {
+      title: '是否会被渲染',
+      jsCode: `
+created() {
+  this.text1 = 'text1'
+}
+// mounted不会被渲染 会报错
+mounted() {
+  this.text2 = 'text2'
+}
+// 因为beforeMount时 render 函数首次被调用， mounted 是实例被挂载后调用 $el 被挂载 
+`,
+      desc: [
+        'host 是默认模式 但是连接中会带有 # 号  有些分享到第三方app 等情况有可能会存在过滤导致的问题',
+        'mode: history, 开启history 模式  通过 history.pushState() 实现页面地址变更 能前进和后退但是不刷新。通过 onpopstate 来监听前进后退',
+        '区别 host 模式有#号，history 模式在进行多级path时刷新页面会404 需要通过ng等配置 重定向到 首页。',
+      ]
+    },
+    {
       title: 'nextTick',
       jsCode: `const callbacks = []
 let pending = false

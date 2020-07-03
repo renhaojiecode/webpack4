@@ -5,4 +5,5 @@ webpack.prod.js
 webpack.dll.js
 /src/lib
 /dist
+/node
 school.txt

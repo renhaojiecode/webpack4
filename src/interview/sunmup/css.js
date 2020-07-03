@@ -36,6 +36,24 @@ word-wrap: break-word
 word-break: break-all
 `,
     },
+    {
+      title: '适配 ipx 的底部安全区域',
+      jsCode: ``,
+      desc: [
+        'padding-bottom: constant(safe-area-inset-bottom)',
+        'padding-bottom: env(safe-area-inset-bottom)',
+      ],
+    },
+    {
+      title: '多行文本溢出',
+      jsCode: ``,
+      desc: [
+        '单行： overflow: hidden; text-overflow:ellipsis; white-space: nowrap; ',
+        '多行： display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; //行数 overflow: hidden; ',
+        '兼容： p{position: relative; line-height: 20px; max-height: 40px;overflow: hidden;} p::after{content: "..."; position: absolute; bottom: 0; right: 0; padding-left: 40px; background: -webkit-linear-gradient(left, transparent, #fff 55%); background: -o-linear-gradient(right, transparent, #fff 55%); background: -moz-linear-gradient(right, transparent, #fff 55%); background: linear-gradient(to right, transparent, #fff 55%); }',
+      ],
+      img: []
+    },
     // {
     //   title: '',
     //   jsCode: ``,
