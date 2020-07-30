@@ -41,6 +41,7 @@ style scoped  可以这样使作用于子组件
         'host 是默认模式 但是连接中会带有 # 号  有些分享到第三方app 等情况有可能会存在过滤导致的问题',
         'mode: history, 开启history 模式  通过 history.pushState() 实现页面地址变更 能前进和后退但是不刷新。通过 onpopstate 来监听前进后退',
         '区别 host 模式有#号，history 模式在进行多级path时刷新页面会404 需要通过ng等配置 重定向到 首页。',
+        'history 对浏览器的版本要求更高',
       ]
     },
     {
@@ -61,10 +62,18 @@ mounted() {
 }
 // 因为beforeMount时 render 函数首次被调用， mounted 是实例被挂载后调用 $el 被挂载 
 `,
+      desc: []
+    },
+    {
+      title: 'Vuex',
+      jsCode: ``,
       desc: [
-        'host 是默认模式 但是连接中会带有 # 号  有些分享到第三方app 等情况有可能会存在过滤导致的问题',
-        'mode: history, 开启history 模式  通过 history.pushState() 实现页面地址变更 能前进和后退但是不刷新。通过 onpopstate 来监听前进后退',
-        '区别 host 模式有#号，history 模式在进行多级path时刷新页面会404 需要通过ng等配置 重定向到 首页。',
+        'state，驱动应用的数据源；',
+        'view，以声明方式将 state 映射到视图；',
+        'actions，响应在 view 上的用户输入导致的状态变化。',
+        '每一个 Vuex 应用的核心就是 store（仓库）。“store”基本上就是一个容器，它包含着你的应用中大部分的状态 (state)。Vuex 和单纯的全局对象有以下两点不同：\
+        <br>&nbsp;&nbsp; Vuex 的状态存储是响应式的。当 Vue 组件从 store 中读取状态的时候，若 store 中的状态发生变化，那么相应的组件也会相应地得到高效更新。\
+        <br>&nbsp;&nbsp; 你不能直接改变 store 中的状态。改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation。这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。'
       ]
     },
     {
@@ -174,7 +183,7 @@ export function nextTick (cb?: Function, ctx?: Object) {
         'Vue 在更新 DOM 时是异步执行的。',
         '为了在数据变化之后等待 Vue 完成更新 DOM，可以在数据变化之后立即使用 Vue.nextTick(callback)',
         'Vue.nextTick 是基于 Promise MutationObserver setTimeout 这几种异步操作来实现的  \
-        <br>&nbsp;&nbsp;>> 实现原理是 vue操作DOM之后 执行异步队列 然后更新DOM（同步） 因此在数据变更语句后边 执行一个异步操作一定可以获得变更后的DOM节点',
+        <br>&nbsp;&nbsp; 实现原理是 vue操作DOM之后 执行异步队列 然后更新DOM（同步） 因此在数据变更语句后边 执行一个异步操作一定可以获得变更后的DOM节点',
       ],
       img: []
     },

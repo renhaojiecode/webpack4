@@ -15,8 +15,8 @@ export default {
       jsCode: ``,
       desc: [
         '有两个重大差异：  \
-        <br>&nbsp;&nbsp;>>  CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。  \
-        <br>&nbsp;&nbsp;>>  CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。',
+        <br>&nbsp;&nbsp;  CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的引用。  \
+        <br>&nbsp;&nbsp;  CommonJS 模块是运行时加载，ES6 模块是编译时输出接口。',
         '第一个差异是 因为 CommonJS 输出的是一个拷贝对象 模块内部的变化就影响不到这个值',
         '第二个差异是因为 CommonJS 加载的是一个对象（即module.exports属性），该对象只有在脚本运行完才会生成。而 ES6 模块不是对象，它的对外接口只是一种静态定义，在代码静态解析阶段就会生成。'
       ],
@@ -33,31 +33,31 @@ export default {
         '每个模块内部会直接写入 exports 对象等同于 var exports = module.exports;',
         'CommonJS模块的加载机制是，输入的是被输出的值的拷贝。也就是说，一旦输出一个值，模块内部的变化就影响不到这个值。请看下面这个例子。',
         'CommonJS模块的特点如下。  \
-        <br>&nbsp;&nbsp;>> 模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。  \
-        <br>&nbsp;&nbsp;>> 模块加载的顺序，按照其在代码中出现的顺序。  \
-        <br>&nbsp;&nbsp;>> 加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。由于Node.js主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式。',
+        <br>&nbsp;&nbsp; 模块可以多次加载，但是只会在第一次加载时运行一次，然后运行结果就被缓存了，以后再加载，就直接读取缓存结果。要想让模块再次运行，必须清除缓存。  \
+        <br>&nbsp;&nbsp; 模块加载的顺序，按照其在代码中出现的顺序。  \
+        <br>&nbsp;&nbsp; 加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。由于Node.js主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式。',
         'Node内部提供一个Module构建函数。所有模块都是Module的实例。每个模块内部，都有一个module对象，代表当前模块。它有以下属性:  \
-        <br>&nbsp;&nbsp;>> module.id 模块的识别符，通常是带有绝对路径的模块文件名。 \
-        <br>&nbsp;&nbsp;>> module.filename 模块的文件名，带有绝对路径。 \
-        <br>&nbsp;&nbsp;>> module.parent 返回一个对象，表示调用该模块的模块。 \
-        <br>&nbsp;&nbsp;>> module.children 返回一个数组，表示该模块要用到的其他模块。 \
-        <br>&nbsp;&nbsp;>> module.exports 表示模块对外输出的值。 ',
+        <br>&nbsp;&nbsp; module.id 模块的识别符，通常是带有绝对路径的模块文件名。 \
+        <br>&nbsp;&nbsp; module.filename 模块的文件名，带有绝对路径。 \
+        <br>&nbsp;&nbsp; module.parent 返回一个对象，表示调用该模块的模块。 \
+        <br>&nbsp;&nbsp; module.children 返回一个数组，表示该模块要用到的其他模块。 \
+        <br>&nbsp;&nbsp; module.exports 表示模块对外输出的值。 ',
         'require 命令  \
-        <br>&nbsp;&nbsp;>>  require命令的基本功能是，读入并执行一个JavaScript文件，然后返回该模块的exports对象。如果没有发现指定模块，会报错。\
-        <br>&nbsp;&nbsp;>>  如果模块输出的是一个函数，那就不能定义在exports对象上面，而要定义在module.exports变量上面。永远推荐 module.exports 写法。\
-        <br>&nbsp;&nbsp;>>  require命令用于加载文件，后缀名默认为.js。\
-        <br>&nbsp;&nbsp;>>  对于对此require同一模块 不会重新加载 输出的是缓存 -> require.cache',
+        <br>&nbsp;&nbsp;  require命令的基本功能是，读入并执行一个JavaScript文件，然后返回该模块的exports对象。如果没有发现指定模块，会报错。\
+        <br>&nbsp;&nbsp;  如果模块输出的是一个函数，那就不能定义在exports对象上面，而要定义在module.exports变量上面。永远推荐 module.exports 写法。\
+        <br>&nbsp;&nbsp;  require命令用于加载文件，后缀名默认为.js。\
+        <br>&nbsp;&nbsp;  对于对此require同一模块 不会重新加载 输出的是缓存 -> require.cache',
         '根据参数的不同格式，require命令去不同路径寻找模块文件  \
-        <br>&nbsp;&nbsp;>>  如果参数字符串以“/”开头，则表示加载的是一个位于绝对路径的模块文件。比如，require("/home/marco/foo.js")将加载/home/marco/foo.js。 \
-        <br>&nbsp;&nbsp;>> 如果参数字符串以“./”开头，则表示加载的是一个位于相对路径（跟当前执行脚本的位置相比）的模块文件。比如，require("./circle")将加载当前脚本同一目录的circle.js。 \
-        <br>&nbsp;&nbsp;>>  如果参数字符串不以“./“或”/“开头，则表示加载的是一个默认提供的核心模块（位于Node的系统安装目录中），或者一个位于各级node_modules目录的已安装模块（全局安装或局部安装）。\
+        <br>&nbsp;&nbsp;  如果参数字符串以“/”开头，则表示加载的是一个位于绝对路径的模块文件。比如，require("/home/marco/foo.js")将加载/home/marco/foo.js。 \
+        <br>&nbsp;&nbsp; 如果参数字符串以“./”开头，则表示加载的是一个位于相对路径（跟当前执行脚本的位置相比）的模块文件。比如，require("./circle")将加载当前脚本同一目录的circle.js。 \
+        <br>&nbsp;&nbsp;  如果参数字符串不以“./“或”/“开头，则表示加载的是一个默认提供的核心模块（位于Node的系统安装目录中），或者一个位于各级node_modules目录的已安装模块（全局安装或局部安装）。\
         ',
         '举例来说，脚本/home/user/projects/foo.js执行了require("bar.js")命令，Node会依次搜索以下文件。  \
-        <br>&nbsp;&nbsp;>>  /usr/local/lib/node/bar.js  \
-        <br>&nbsp;&nbsp;>>  /home/user/projects/node_modules/bar.js  \
-        <br>&nbsp;&nbsp;>>  /home/user/node_modules/bar.js  \
-        <br>&nbsp;&nbsp;>>  /home/node_modules/bar.js  \
-        <br>&nbsp;&nbsp;>>  /node_modules/bar.js  \
+        <br>&nbsp;&nbsp;  /usr/local/lib/node/bar.js  \
+        <br>&nbsp;&nbsp;  /home/user/projects/node_modules/bar.js  \
+        <br>&nbsp;&nbsp;  /home/user/node_modules/bar.js  \
+        <br>&nbsp;&nbsp;  /home/node_modules/bar.js  \
+        <br>&nbsp;&nbsp;  /node_modules/bar.js  \
         <br>&nbsp;&nbsp;这样设计的目的是，使得不同的模块可以将所依赖的模块本地化。',
         '如果指定的模块文件没有发现，Node会尝试为文件名添加.js、.json、.node后，再去搜索。.js件会以文本格式的JavaScript脚本文件解析，.json文件会以JSON格式的文本文件解析，.node文件会以编译后的二进制文件解析。',
         '如果想得到require命令加载的确切文件名，使用require.resolve()方法。',

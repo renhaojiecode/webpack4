@@ -29,7 +29,7 @@
             v-for="(desc, descindex) in content.desc"
             v-show="desc != ''"
             :key="descindex"
-            v-html="descindex + 1 + '、' + desc"
+            v-html="initdesc(descindex, desc)"
           >
           </p>
           <pre v-if="content.jsCode">
@@ -138,6 +138,10 @@ export default {
       this.nowIndex = index
       location.hash = `#${index}`
     },
+    initdesc(descindex, desc) {
+      let str = desc.replace(/<br>&nbsp;&nbsp;/g, '<br><i class="subtitle"></i>')
+      return descindex + 1 + '、' + str
+    },
     copyCode(value) {
       let transfer = document.createElement('input')
       document.body.appendChild(transfer)
@@ -224,6 +228,9 @@ export default {
       img
         display: block
         width: 100%
+  i.subtitle
+    margin: 0 5px 0 15px
+    border: 1px solid #f85415
   pre
     margin-left: auto
     margin-right: auto

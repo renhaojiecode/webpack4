@@ -58,7 +58,7 @@ word-break: break-all
     //   title: '',
     //   jsCode: ``,
     //   desc: [
-    //     '<br>&nbsp;&nbsp;>>  ',
+    //     '<br>&nbsp;&nbsp;  ',
     //   ],
     //   img: []
     // },

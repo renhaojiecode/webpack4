@@ -15,7 +15,7 @@ export default {
     //   title: '',
     //   jsCode: ``,
     //   desc: [
-    //     '<br>&nbsp;&nbsp;>>  ',
+    //     '<br>&nbsp;&nbsp;  ',
     //   ],
     //   img: []
     // },

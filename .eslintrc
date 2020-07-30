@@ -33,7 +33,7 @@
         "no-template-curly-in-string": ["warn"]
     },
     "parserOptions": {
-        "ecmaVersion": 8,
+        "ecmaVersion": 9,
         "sourceType": "module"
     },
     "env": {

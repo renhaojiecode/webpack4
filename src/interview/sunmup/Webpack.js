@@ -45,7 +45,6 @@ export default {
       jsCode: ``,
       desc: [
         '利用 websocket 双向通讯的能力 获取更新并通知页面更新',
-        '<br>&nbsp;&nbsp;>>  ',
       ],
     },
     {
@@ -59,7 +58,6 @@ export default {
         '删除不需要的一些代码，利用SplitChunksPlugin 进行分块',
         'webpack-parallel-uglify-plugin: 因webpack提供的UglifyJS插件采用单线程压缩，速度很慢。所以将此插件替换为webpack-parallel-uglify-plugin插件，此插件可以并行运行UglifyJS插件，可有效减少构建时间。',
         'HappyPack: 由于运行在node.js之上的webpack是单线程模型，所以webpack做事只能一件一件去做。HappyPack可以让webpack在同一时间处理多个任务，把任务分解给多个子进程去并发执行，处理完之后将结果发给主进程',
-        '<br>&nbsp;&nbsp;>>  ',
       ],
     },
   ]

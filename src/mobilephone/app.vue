@@ -4,9 +4,11 @@
     <div class="screen-item"
       v-for="(item, index) in screenList"
       :key="'screen' + index"
+      :class="{cur: item.cur}"
       v-text="item.name"
       @click="screenClick(item)"
     ></div>
+    <div class="count" v-text="count + '' + mapCount"></div>
   </div>
   <div class="phone-list-wrapper">
     <div class="phone-detail-item"
@@ -91,20 +93,24 @@
 </template>
 <script>
 let screenList = [
-  {
-    name: '所有',
-    key: 'All'
-  },
+  // {
+  //   name: '所有',
+  //   key: 'ALL',
+  //   cur: true,
+  // },
   {
     name: '华为',
-    key: 'HUAWEI'
+    key: 'HUAWEI',
+    cur: false,
   },
   {
     name: '荣耀',
-    key: 'HONOR'
+    key: 'HONOR',
+    cur: false,
   },
 ]
 import mList from './data.js'
+import { mapState, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -112,13 +118,34 @@ export default {
       mobileList: mList.slice()
     }
   },
+  computed: {
+    ...mapGetters([
+      'allCount'
+    ]),
+    ...mapState({
+      mapCount: state => { return state.count }
+    }),
+    count() {
+      return this.$store.state.count
+    },
+  },
   mounted() {
     //
   },
   methods: {
     screenClick(item) {
-      return item.key
-    }
+      item.cur = !item.cur
+      item.cur && this.increment()
+      !item.cur && this.decrement()
+    },
+    increment() {
+      this.$store.commit('increment')
+      console.log(this.$store.state.count)
+    },
+    decrement() {
+      this.$store.commit('decrement')
+      console.log(this.$store.state.count)
+    },
   }
 }
 </script>
@@ -141,6 +168,8 @@ export default {
       font-size: 14px
       background: #ffffff
       border-radius: 2px
+      &.cur
+        background: #e0f0ff
   .phone-list-wrapper
     margin-top: 20px
     overflow: hidden

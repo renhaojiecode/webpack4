@@ -211,9 +211,9 @@ export default {
         '命令式编程: 关心解决问题的步骤。',
         '函数式编程：函数这个术语不是指计算机中的函数（实际上是Subroutine），而是指数学中的函数，即自变量的映射。也就是说一个函数的值仅决定于函数参数的值，不依赖其他状态。比如sqrt(x)函数计算x的平方根，只要x不变，不论什么时候调用，调用几次，值都是不变的。',
         '函数式编程的好处：  \
-        <br>&nbsp;&nbsp;&nbsp;>>  由于命令式编程语言也可以通过类似函数指针的方式来实现高阶函数，函数式的最主要的好处主要是不可变性带来的。没有可变的状态，函数就是引用透明（Referential transparency）没有副作用（No Side Effect）  \
-        <br>&nbsp;&nbsp;&nbsp;>>  一个好处是，函数即不依赖外部的状态也不修改外部的状态，函数调用的结果不依赖调用的时间和位置，这样写的代码容易进行推理，不容易出错。这使得单元测试和调试都更容易。\
-        <br>&nbsp;&nbsp;&nbsp;>>  不变性带来的另一个好处是：由于（多个线程之间）不共享状态，不会造成资源争用(Race condition)，也就不需要用锁来保护可变状态，也就不会出现死锁，这样可以更好地并发起来，尤其是在对称多处理器（SMP）架构下能够更好地利用多个处理器（核）提供的并行处理能力。\
+        <br>&nbsp;&nbsp;  由于命令式编程语言也可以通过类似函数指针的方式来实现高阶函数，函数式的最主要的好处主要是不可变性带来的。没有可变的状态，函数就是引用透明（Referential transparency）没有副作用（No Side Effect）  \
+        <br>&nbsp;&nbsp;  一个好处是，函数即不依赖外部的状态也不修改外部的状态，函数调用的结果不依赖调用的时间和位置，这样写的代码容易进行推理，不容易出错。这使得单元测试和调试都更容易。\
+        <br>&nbsp;&nbsp;  不变性带来的另一个好处是：由于（多个线程之间）不共享状态，不会造成资源争用(Race condition)，也就不需要用锁来保护可变状态，也就不会出现死锁，这样可以更好地并发起来，尤其是在对称多处理器（SMP）架构下能够更好地利用多个处理器（核）提供的并行处理能力。\
         '
       ],
     },
@@ -340,13 +340,13 @@ var getGlobal = function () {
         '顶层对象的属性与全局变量挂钩，被认为是 JavaScript 语言最大的设计败笔之一。这样的设计带来了几个很大的问题，首先是没法在编译时就报出变量未声明的错误，只有运行时才能知道（因为全局变量可能是顶层对象的属性创造的，而属性的创造是动态的）；其次，程序员很容易不知不觉地就创建了全局变量（比如打字出错）；最后，顶层对象的属性是到处可以读写的，这非常不利于模块化编程。另一方面，window对象有实体含义，指的是浏览器的窗口对象，顶层对象是一个有实体含义的对象，也是不合适的。',
         'globalThis 对象  \
         <br>&nbsp;&nbsp; JavaScript 语言存在一个顶层对象，它提供全局环境（即全局作用域），所有代码都是在这个环境中运行。但是，顶层对象在各种实现里面是不统一的。  \
-        <br>&nbsp;&nbsp;>> 浏览器里面，顶层对象是window，但 Node 和 Web Worker 没有window。 \
-        <br>&nbsp;&nbsp;>> 浏览器和 Web Worker 里面，self也指向顶层对象，但是 Node 没有self。 \
-        <br>&nbsp;&nbsp;>> Node 里面，顶层对象是global，但其他环境都不支持。 \
+        <br>&nbsp;&nbsp; 浏览器里面，顶层对象是window，但 Node 和 Web Worker 没有window。 \
+        <br>&nbsp;&nbsp; 浏览器和 Web Worker 里面，self也指向顶层对象，但是 Node 没有self。 \
+        <br>&nbsp;&nbsp; Node 里面，顶层对象是global，但其他环境都不支持。 \
         <br>&nbsp;&nbsp; 同一段代码为了能够在各种环境，都能取到顶层对象，现在一般是使用this变量，但是有局限性。  \
-        <br>&nbsp;&nbsp;>> 全局环境中，this会返回顶层对象。但是，Node 模块和 ES6 模块中，this返回的是当前模块。 \
-        <br>&nbsp;&nbsp;>> 函数里面的this，如果函数不是作为对象的方法运行，而是单纯作为函数运行，this会指向顶层对象。但是，严格模式下，这时this会返回undefined。 \
-        <br>&nbsp;&nbsp;>> 不管是严格模式，还是普通模式，new Function("return this")()，总是会返回全局对象。但是，如果浏览器用了 CSP（Content Security Policy，内容安全策略），那么eval、new Function这些方法都可能无法使用。 ',
+        <br>&nbsp;&nbsp; 全局环境中，this会返回顶层对象。但是，Node 模块和 ES6 模块中，this返回的是当前模块。 \
+        <br>&nbsp;&nbsp; 函数里面的this，如果函数不是作为对象的方法运行，而是单纯作为函数运行，this会指向顶层对象。但是，严格模式下，这时this会返回undefined。 \
+        <br>&nbsp;&nbsp; 不管是严格模式，还是普通模式，new Function("return this")()，总是会返回全局对象。但是，如果浏览器用了 CSP（Content Security Policy，内容安全策略），那么eval、new Function这些方法都可能无法使用。 ',
         'ES2020 在语言标准的层面，引入globalThis作为顶层对象。也就是说，任何环境下，globalThis都是存在的，都可以从它拿到顶层对象，指向全局环境下的this。',
       ],
     },
@@ -508,21 +508,21 @@ tail() => other(3)
 `,
       desc: [
         'ES6可以给函数参数设置默认值 (x = 0) 由于参数隐式使用var声明 所以函数内部不能 let const x变量  \
-        <br>&nbsp;&nbsp;>> 如果传入 fn(undefined)，将触发该参数等于默认值，null则没有这个效果。 \
-        <br>&nbsp;&nbsp;>> 默认值如果是表达式和函数 执行时机是函数调用时 而不是函数定义时。 如果传参了就不会执行 \
-        <br>&nbsp;&nbsp;>> 函数的length（该函数预期传入的参数个数）属性受到影响，只会返回 没有默认值(和非rest参数)的参数数量。 \
-        <br>&nbsp;&nbsp;>> 一旦设置了参数的默认值，函数进行声明初始化时，参数会形成一个单独的作用域（context）。等到初始化结束，这个作用域就会消失。这种语法行为，在不设置参数默认值时，是不会出现的。',
+        <br>&nbsp;&nbsp; 如果传入 fn(undefined)，将触发该参数等于默认值，null则没有这个效果。 \
+        <br>&nbsp;&nbsp; 默认值如果是表达式和函数 执行时机是函数调用时 而不是函数定义时。 如果传参了就不会执行 \
+        <br>&nbsp;&nbsp; 函数的length（该函数预期传入的参数个数）属性受到影响，只会返回 没有默认值(和非rest参数)的参数数量。 \
+        <br>&nbsp;&nbsp; 一旦设置了参数的默认值，函数进行声明初始化时，参数会形成一个单独的作用域（context）。等到初始化结束，这个作用域就会消失。这种语法行为，在不设置参数默认值时，是不会出现的。',
         '如果函数的 参数 使用了 默认值、解构赋值、扩展运算符 就不能在函数内部使用 "use strict"; 严格模式 否则会报错',
         'ES6 把name属性加入规范 返回函数的名字 表达式和函数声明都行',
         '箭头函数有几个使用注意点。  \
-        <br>&nbsp;&nbsp;>> （1）函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。  \
-        <br>&nbsp;&nbsp;>> （2）不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。  \
-        <br>&nbsp;&nbsp;>> （3）不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。  \
-        <br>&nbsp;&nbsp;>> （4）不可以使用yield命令，因此箭头函数不能用作 Generator 函数。',
+        <br>&nbsp;&nbsp; （1）函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。  \
+        <br>&nbsp;&nbsp; （2）不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。  \
+        <br>&nbsp;&nbsp; （3）不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。  \
+        <br>&nbsp;&nbsp; （4）不可以使用yield命令，因此箭头函数不能用作 Generator 函数。',
         '尾调用优化  \
-        <br>&nbsp;&nbsp;>> 尾调用（Tail Call）是函数式编程的一个重要概念，是指某个函数的最后一步是调用另一个函数。  \
-        <br>&nbsp;&nbsp;>> 函数调用会在内存形成一个“调用记录”，又称“调用帧”（call frame），保存调用位置和内部变量等信息。如果在函数A的内部调用函数B，那么在A的调用帧上方，还会形成一个B的调用帧。等到B运行结束，将结果返回到A，B的调用帧才会消失。如果函数B内部还调用函数C，那就还有一个C的调用帧，以此类推。所有的调用帧，就形成一个“调用栈”（call stack）。 \
-        <br>&nbsp;&nbsp;>>  如果函数g不是尾调用，函数f就需要保存内部变量m和n的值、g的调用位置等信息。但由于调用g之后，函数f就结束了，所以执行到最后一步，完全可以删除f(x)的调用帧，只保留g(3)的调用帧。 这就是"尾调用优化"\
+        <br>&nbsp;&nbsp; 尾调用（Tail Call）是函数式编程的一个重要概念，是指某个函数的最后一步是调用另一个函数。  \
+        <br>&nbsp;&nbsp; 函数调用会在内存形成一个“调用记录”，又称“调用帧”（call frame），保存调用位置和内部变量等信息。如果在函数A的内部调用函数B，那么在A的调用帧上方，还会形成一个B的调用帧。等到B运行结束，将结果返回到A，B的调用帧才会消失。如果函数B内部还调用函数C，那就还有一个C的调用帧，以此类推。所有的调用帧，就形成一个“调用栈”（call stack）。 \
+        <br>&nbsp;&nbsp; 如果函数g不是尾调用，函数f就需要保存内部变量m和n的值、g的调用位置等信息。但由于调用g之后，函数f就结束了，所以执行到最后一步，完全可以删除f(x)的调用帧，只保留g(3)的调用帧。 这就是"尾调用优化"\
         ',
       ],
     },
@@ -544,10 +544,10 @@ for (let i of arr) {
         'for...in 循环：只遍历对象自身的和继承的可枚举的属性。主要适用于对象。',
         'Object.keys()：返回对象自身的所有可枚举的属性的键名。',
         'for...of 循环: 适用于Iterator 接口的数据结构，或者手动在 Symbol.iterator 属性上部署  \
-        <br>&nbsp;&nbsp;>>  可以使用 break 跳出  \
-        <br>&nbsp;&nbsp;>>  for...of循环调用遍历器接口：遍历数组的键值、数组的遍历器接口只返回具有数字索引的属性。这些跟for...in循环也不一样。   \
-        <br>&nbsp;&nbsp;>>  对于Set 结构 遍历是对应的添加顺序 只有值(key value 相同的原因) \
-        <br>&nbsp;&nbsp;>>  对于Map 结构 遍历是对应的添加顺序 返回一个数组[key, value] \
+        <br>&nbsp;&nbsp;  可以使用 break 跳出  \
+        <br>&nbsp;&nbsp;  for...of循环调用遍历器接口：遍历数组的键值、数组的遍历器接口只返回具有数字索引的属性。这些跟for...in循环也不一样。   \
+        <br>&nbsp;&nbsp;  对于Set 结构 遍历是对应的添加顺序 只有值(key value 相同的原因) \
+        <br>&nbsp;&nbsp;  对于Map 结构 遍历是对应的添加顺序 返回一个数组[key, value] \
         ',
       ],
     },
@@ -588,28 +588,28 @@ let arr = ['b', 'c'];
       desc: [
         'Iterator是一种接口，为各种不同的数据结构提供统一的访问机制。任何数据结构只要部署 Iterator 接口，就可以完成遍历操作（即依次处理该数据结构的所有成员）。',
         'ES6 中默认的 Iterator接口部署在数据结构的 Symbol.iterator 属性  \
-        <br>&nbsp;&nbsp;>>  数据结构只要具有Symbol.iterator属性，就可以认为是“可遍历的”（iterable）。  \
-        <br>&nbsp;&nbsp;>>  Symbol.iterator 属性实际上是一个函数 返回一个遍历器对象 供for of 消费  \
-        <br>&nbsp;&nbsp;>>  由于 Symbol.iterator 是一个表达式 所以使用时用方括号 [Symbol.iterator]',
+        <br>&nbsp;&nbsp;  数据结构只要具有Symbol.iterator属性，就可以认为是“可遍历的”（iterable）。  \
+        <br>&nbsp;&nbsp;  Symbol.iterator 属性实际上是一个函数 返回一个遍历器对象 供for of 消费  \
+        <br>&nbsp;&nbsp;  由于 Symbol.iterator 是一个表达式 所以使用时用方括号 [Symbol.iterator]',
         '原生具备 Iterator 接口的数据结构如下。  \
-        <br>&nbsp;&nbsp;>>  Array   \
-        <br>&nbsp;&nbsp;>>  Map   \
-        <br>&nbsp;&nbsp;>>  Set   \
-        <br>&nbsp;&nbsp;>>  String   ****\
-        <br>&nbsp;&nbsp;>>  TypedArray   \
-        <br>&nbsp;&nbsp;>>  函数的 arguments 对象   \
-        <br>&nbsp;&nbsp;>>  NodeList 对象',
+        <br>&nbsp;&nbsp;  Array   \
+        <br>&nbsp;&nbsp;  Map   \
+        <br>&nbsp;&nbsp;  Set   \
+        <br>&nbsp;&nbsp;  String   ****\
+        <br>&nbsp;&nbsp;  TypedArray   \
+        <br>&nbsp;&nbsp;  函数的 arguments 对象   \
+        <br>&nbsp;&nbsp;  NodeList 对象',
         'Iterator 的遍历过程是这样的。  \
-        <br>&nbsp;&nbsp;>>  （1）创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。  \
-        <br>&nbsp;&nbsp;>>  （2）第一次调用指针对象的next方法，可以将指针指向数据结构的第一个成员。  \
-        <br>&nbsp;&nbsp;>>  （3）第二次调用指针对象的next方法，指针就指向数据结构的第二个成员。  \
-        <br>&nbsp;&nbsp;>>  （4）不断调用指针对象的next方法，直到它指向数据结构的结束位置。',
+        <br>&nbsp;&nbsp;  （1）创建一个指针对象，指向当前数据结构的起始位置。也就是说，遍历器对象本质上，就是一个指针对象。  \
+        <br>&nbsp;&nbsp;  （2）第一次调用指针对象的next方法，可以将指针指向数据结构的第一个成员。  \
+        <br>&nbsp;&nbsp;  （3）第二次调用指针对象的next方法，指针就指向数据结构的第二个成员。  \
+        <br>&nbsp;&nbsp;  （4）不断调用指针对象的next方法，直到它指向数据结构的结束位置。',
         'Iterator 的使用场合  \
-        <br>&nbsp;&nbsp;>>  for...of 循环时\
-        <br>&nbsp;&nbsp;>>  解构赋值 对数组和 Set 结构进行解构赋值时，会默认调用Symbol.iterator方法。\
-        <br>&nbsp;&nbsp;>>  扩展运算符（...）也会调用默认的 Iterator 接口。 可以很方便的将有Iterator接口的数据结构转换为数组。\
-        <br>&nbsp;&nbsp;>>  yield*后面跟的是一个可遍历的结构，它会调用该结构的遍历器接口。\
-        <br>&nbsp;&nbsp;>>  由于数组的遍历会调用遍历器接口，所以任何接受数组作为参数的场合，其实都调用了遍历器接口。下面是一些例子。 Array.from() for...of Promise.all() 等\
+        <br>&nbsp;&nbsp;  for...of 循环时\
+        <br>&nbsp;&nbsp;  解构赋值 对数组和 Set 结构进行解构赋值时，会默认调用Symbol.iterator方法。\
+        <br>&nbsp;&nbsp;  扩展运算符（...）也会调用默认的 Iterator 接口。 可以很方便的将有Iterator接口的数据结构转换为数组。\
+        <br>&nbsp;&nbsp;  yield*后面跟的是一个可遍历的结构，它会调用该结构的遍历器接口。\
+        <br>&nbsp;&nbsp;  由于数组的遍历会调用遍历器接口，所以任何接受数组作为参数的场合，其实都调用了遍历器接口。下面是一些例子。 Array.from() for...of Promise.all() 等\
         '
       ],
     },
@@ -700,17 +700,17 @@ Array.from(oSet)
         'Set 结构没有键名，只有键值（或者说键名和键值是同一个值）',
         '成员唯一性的比较 它类似于精确相等运算符（===），主要的区别是向 Set 加入值时认为NaN等于自身，而精确相等运算符认为NaN不等于自身。',
         'Set 结构的实例有四个遍历方法，可以用于遍历成员。  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.keys()：返回键名的遍历器  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.values()：返回键值的遍历器  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.entries()：返回键值对的遍历器  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.forEach()：使用回调函数遍历每个成员',
+        <br>&nbsp;&nbsp;  Set.prototype.keys()：返回键名的遍历器  \
+        <br>&nbsp;&nbsp;  Set.prototype.values()：返回键值的遍历器  \
+        <br>&nbsp;&nbsp;  Set.prototype.entries()：返回键值对的遍历器  \
+        <br>&nbsp;&nbsp;  Set.prototype.forEach()：使用回调函数遍历每个成员',
         'Set 的其他方法  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.constructor：构造函数，默认就是Set函数。  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.size：返回Set实例的成员总数。  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.add(value)：添加某个值，返回 Set 结构本身。  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.delete(value)：删除某个值，返回一个布尔值，表示删除是否成功。  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.has(value)：返回一个布尔值，表示该值是否为Set的成员。  \
-        <br>&nbsp;&nbsp;>>  Set.prototype.clear()：清除所有成员，没有返回值。'
+        <br>&nbsp;&nbsp;  Set.prototype.constructor：构造函数，默认就是Set函数。  \
+        <br>&nbsp;&nbsp;  Set.prototype.size：返回Set实例的成员总数。  \
+        <br>&nbsp;&nbsp;  Set.prototype.add(value)：添加某个值，返回 Set 结构本身。  \
+        <br>&nbsp;&nbsp;  Set.prototype.delete(value)：删除某个值，返回一个布尔值，表示删除是否成功。  \
+        <br>&nbsp;&nbsp;  Set.prototype.has(value)：返回一个布尔值，表示该值是否为Set的成员。  \
+        <br>&nbsp;&nbsp;  Set.prototype.clear()：清除所有成员，没有返回值。'
       ],
     },
     {
@@ -718,8 +718,8 @@ Array.from(oSet)
       jsCode: ``,
       desc: [
         'WeakSet 结构与 Set 类似，也是不重复的值的集合。但是，它与 Set 有两个区别。  \
-        <br>&nbsp;&nbsp;>>  首先，WeakSet 的成员只能是对象，而不能是其他类型的值。  \
-        <br>&nbsp;&nbsp;>>  其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。',
+        <br>&nbsp;&nbsp;  首先，WeakSet 的成员只能是对象，而不能是其他类型的值。  \
+        <br>&nbsp;&nbsp;  其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。',
       ],
     },
     {
@@ -730,17 +730,17 @@ Array.from(oSet)
         'Map 数据结构 可以把对象作为 key (+0 -0, NaN 认为是一个key, 如果是对象则看其内存位置)',
         '对象转为 Map 可以通过Object.entries()。',
         'Map 的方法  \
-        <br>&nbsp;&nbsp;>>  Map.prototype.set(key, value) set方法设置键名key对应的键值为value，然后返回整个 Map 结构。如果key已经有值，则键值会被更新，否则就新生成该键。  \
-        <br>&nbsp;&nbsp;>>  Map.prototype.get(key) get方法读取key对应的键值，如果找不到key，返回undefined。\
-        <br>&nbsp;&nbsp;>>  Map.prototype.has(key) has方法返回一个布尔值，表示某个键是否在当前 Map 对象之中。\
-        <br>&nbsp;&nbsp;>>  Map.prototype.delete(key) delete方法删除某个键，返回true。如果删除失败，返回false。\
-        <br>&nbsp;&nbsp;>>  Map.prototype.clear() clear方法清除所有成员，没有返回值。 \
+        <br>&nbsp;&nbsp;  Map.prototype.set(key, value) set方法设置键名key对应的键值为value，然后返回整个 Map 结构。如果key已经有值，则键值会被更新，否则就新生成该键。  \
+        <br>&nbsp;&nbsp;  Map.prototype.get(key) get方法读取key对应的键值，如果找不到key，返回undefined。\
+        <br>&nbsp;&nbsp;  Map.prototype.has(key) has方法返回一个布尔值，表示某个键是否在当前 Map 对象之中。\
+        <br>&nbsp;&nbsp;  Map.prototype.delete(key) delete方法删除某个键，返回true。如果删除失败，返回false。\
+        <br>&nbsp;&nbsp;  Map.prototype.clear() clear方法清除所有成员，没有返回值。 \
         ',
         'Map 结构原生提供三个遍历器生成函数和一个遍历方法。  \
-        <br>&nbsp;&nbsp;>>  Map.prototype.keys()：返回键名的遍历器。  \
-        <br>&nbsp;&nbsp;>>  Map.prototype.values()：返回键值的遍历器。  \
-        <br>&nbsp;&nbsp;>>  Map.prototype.entries()：返回所有成员的遍历器。  \
-        <br>&nbsp;&nbsp;>>  Map.prototype.forEach()：遍历 Map 的所有成员。'
+        <br>&nbsp;&nbsp;  Map.prototype.keys()：返回键名的遍历器。  \
+        <br>&nbsp;&nbsp;  Map.prototype.values()：返回键值的遍历器。  \
+        <br>&nbsp;&nbsp;  Map.prototype.entries()：返回所有成员的遍历器。  \
+        <br>&nbsp;&nbsp;  Map.prototype.forEach()：遍历 Map 的所有成员。'
       ],
     },
     {
@@ -751,8 +751,8 @@ Array.from(oSet)
         '其次，WeakMap的键名所指向的对象，不计入垃圾回收机制。',
         '注意，WeakMap 弱引用的只是键名，而不是键值。键值依然是正常引用。',
         'WeakMap  \
-        <br>&nbsp;&nbsp;>>  一是没有遍历操作（即没有keys()、values()和entries()方法），也没有size属性。\
-        <br>&nbsp;&nbsp;>>  二是无法清空，即不支持clear方法。因此，WeakMap只有四个方法可用：get()、set()、has()、delete()。',
+        <br>&nbsp;&nbsp;  一是没有遍历操作（即没有keys()、values()和entries()方法），也没有size属性。\
+        <br>&nbsp;&nbsp;  二是无法清空，即不支持clear方法。因此，WeakMap只有四个方法可用：get()、set()、has()、delete()。',
       ],
     },
     {
@@ -793,8 +793,8 @@ console.log(Object.keys(proxy)); // ['name', 'age']
 `,
       desc: [
         'Symbol 最重要的两个作用  \
-        <br>&nbsp;&nbsp;>>  可以防止属性命名冲突。  \
-        <br>&nbsp;&nbsp;>>  可以模拟私有属性。 (通过 proxy 其 ownKeys 方法 使外边不能知道obj有这个属性，但是可以通过源码很容易找到) \
+        <br>&nbsp;&nbsp;  可以防止属性命名冲突。  \
+        <br>&nbsp;&nbsp;  可以模拟私有属性。 (通过 proxy 其 ownKeys 方法 使外边不能知道obj有这个属性，但是可以通过源码很容易找到) \
         ',
       ],
     },
@@ -819,24 +819,24 @@ console.log(Object.keys(proxy)); // ['name', 'age']
         'CSRF  XSS',
         '跨网站脚本 XSS 利用的是用户对指定网站的信任，CSRF 利用的是网站对用户网页浏览器的信任。',
         'XSS  跨站脚本攻击是指恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。\
-        <br>&nbsp;&nbsp;>>  反射型: 发出请求时，XSS代码出现在URL中，作为输入提交到服务器，服务器解释后相应，在响应内容中出现这段XSS代码，最后由浏览器解释执行！ 比如接口参数里有一个script标签 未处理就被接口返回 脚本就奔执行了 (https://zhuanlan.zhihu.com/p/37455061) 。exp: 比如给你一个微博的连接url 带有一个script标签 引入了一段js js自动在页面调用 发微博的功能 或者 获取你的cookie信息 发送回服务器\
-        <br>&nbsp;&nbsp;>>  存储型: 提交的XSS代码会存储在服务器上，下次请求目标页面的时候不需要再次提交XSS代码！！存储的位置可以是数据库、内存、文件系统等。典型的例子就是留言板XSS，用户提交一条包含XSS代码的留言存储到数据库，目标用户查看留言板时，那些留言的内容就会从数据库查询出来并显示，在浏览器上与正常的HTML和JS解析执行，触发XSS攻击！！ \
-        <br>&nbsp;&nbsp;>>  DOM型: 利用客户端对 url referrer cookie 等的使用 触发XSS ',
+        <br>&nbsp;&nbsp;  反射型: 发出请求时，XSS代码出现在URL中，作为输入提交到服务器，服务器解释后相应，在响应内容中出现这段XSS代码，最后由浏览器解释执行！ 比如接口参数里有一个script标签 未处理就被接口返回 脚本就奔执行了 (https://zhuanlan.zhihu.com/p/37455061) 。exp: 比如给你一个微博的连接url 带有一个script标签 引入了一段js js自动在页面调用 发微博的功能 或者 获取你的cookie信息 发送回服务器\
+        <br>&nbsp;&nbsp;  存储型: 提交的XSS代码会存储在服务器上，下次请求目标页面的时候不需要再次提交XSS代码！！存储的位置可以是数据库、内存、文件系统等。典型的例子就是留言板XSS，用户提交一条包含XSS代码的留言存储到数据库，目标用户查看留言板时，那些留言的内容就会从数据库查询出来并显示，在浏览器上与正常的HTML和JS解析执行，触发XSS攻击！！ \
+        <br>&nbsp;&nbsp;  DOM型: 利用客户端对 url referrer cookie 等的使用 触发XSS ',
         '如何预防 XSS 攻击  \
-        <br>&nbsp;&nbsp;>>  部署WAF Web 应用层防火墙  \
-        <br>&nbsp;&nbsp;>>  过滤所有HTTML JS CSS标签  \
-        <br>&nbsp;&nbsp;>>  过滤异常字符编码',
+        <br>&nbsp;&nbsp;  部署WAF Web 应用层防火墙  \
+        <br>&nbsp;&nbsp;  过滤所有HTTML JS CSS标签  \
+        <br>&nbsp;&nbsp;  过滤异常字符编码',
         'CSRF 跨站请求伪造（英语：Cross-site request forgery），也被称为 one-click attack 或者 session riding，通常缩写为 CSRF 或者 XSRF， 是一种挟制用户在当前已登录的Web应用程序上执行非本意的操作的攻击方法。',
         '如何发动CSRF攻击  \
         <br>&nbsp;&nbsp;  1、用户登录A网站，并在本地生成Cookie\
         <br>&nbsp;&nbsp;  2、在不退登A网站情况下，用户访问恶意网站B\
         <br>&nbsp;&nbsp;  3、网站B 发起一个A网站的请求 比如GET形式的转账等',
         '如何防御 CSRF 攻击  \
-        <br>&nbsp;&nbsp;>>  验证 HTTP Referer 字段， 但是有很多情况无法获取到Referer比如用户禁用等  \
-        <br>&nbsp;&nbsp;>>  增加验证码参数，攻击者无法获取验证码 用户体验差 \
-        <br>&nbsp;&nbsp;>>  请求添加token，服务器来校验  \
-        <br>&nbsp;&nbsp;>>  在 HTTP 头中自定义属性并验证  \
-        <br>&nbsp;&nbsp;>>  cookie SameSite=Lax  属性(需要浏览器支持 比如 chrome 高版本默认设置)'
+        <br>&nbsp;&nbsp;  验证 HTTP Referer 字段， 但是有很多情况无法获取到Referer比如用户禁用等  \
+        <br>&nbsp;&nbsp;  增加验证码参数，攻击者无法获取验证码 用户体验差 \
+        <br>&nbsp;&nbsp;  请求添加token，服务器来校验  \
+        <br>&nbsp;&nbsp;  在 HTTP 头中自定义属性并验证  \
+        <br>&nbsp;&nbsp;  cookie SameSite=Lax  属性(需要浏览器支持 比如 chrome 高版本默认设置)'
       ],
     },
     {
@@ -850,16 +850,16 @@ console.log(Object.keys(proxy)); // ['name', 'age']
         '两个相同的cookie  path越重优先级越高  可以同一path下设置不同path的cookie',
         'document.cookie="username=value; path=/; expires="+oDate.toGMTString();  \
         +oDate.toUTCString();  \
-        <br>&nbsp;&nbsp;>>  username=value; 设置的cookie 名和值 \
-        <br>&nbsp;&nbsp;>>  expires 有效日期（UTC 时间） 时间设置成过去的时间就可以删除cookie \
-        <br>&nbsp;&nbsp;>>  path cookie属于什么路径 同一网站使用 / 更方便  \
-        <br>&nbsp;&nbsp;>>  httponly 不能被js获取保证其安全性 防止xss攻击 ',
+        <br>&nbsp;&nbsp;  username=value; 设置的cookie 名和值 \
+        <br>&nbsp;&nbsp;  expires 有效日期（UTC 时间） 时间设置成过去的时间就可以删除cookie \
+        <br>&nbsp;&nbsp;  path cookie属于什么路径 同一网站使用 / 更方便  \
+        <br>&nbsp;&nbsp;  httponly 不能被js获取保证其安全性 防止xss攻击 ',
         '***  SameSite 属性单独介绍  Strict / Lax / None 三个值 \
-        <br>&nbsp;&nbsp;>>  是chrome 新加的一个属性，用来防止 CSRF 攻击和用户追踪。  \
-        <br>&nbsp;&nbsp;>>  Strict 完全禁止第三方 Cookie，跨站点时，任何情况下都不会发送 Cookie。换言之，只有当前网页的 URL 主域 与请求目标一致，才会带上 Cookie。 太过严格一般不会使用  \
-        <br>&nbsp;&nbsp;>>  Lax 规则稍稍放宽，大多数情况也是不发送第三方 Cookie，但是导航到目标网址的 Get 请求除外。 \
-        <br>&nbsp;&nbsp;>>  None 不做任何处理 自行设置时需要同时设置 Secure 属性否则不生效 exp: Set-Cookie: widget_session=abc123; SameSite=None; Secure  \
-        <br>&nbsp;&nbsp;>>  参考链接 http://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html  \
+        <br>&nbsp;&nbsp;  是chrome 新加的一个属性，用来防止 CSRF 攻击和用户追踪。  \
+        <br>&nbsp;&nbsp;  Strict 完全禁止第三方 Cookie，跨站点时，任何情况下都不会发送 Cookie。换言之，只有当前网页的 URL 主域 与请求目标一致，才会带上 Cookie。 太过严格一般不会使用  \
+        <br>&nbsp;&nbsp;  Lax 规则稍稍放宽，大多数情况也是不发送第三方 Cookie，但是导航到目标网址的 Get 请求除外。 \
+        <br>&nbsp;&nbsp;  None 不做任何处理 自行设置时需要同时设置 Secure 属性否则不生效 exp: Set-Cookie: widget_session=abc123; SameSite=None; Secure  \
+        <br>&nbsp;&nbsp;  参考链接 http://www.ruanyifeng.com/blog/2019/09/cookie-samesite.html  \
         '
       ],
     },

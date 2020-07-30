@@ -3,7 +3,7 @@ webpack.common.js
 webpack.dev.js
 webpack.prod.js
 webpack.dll.js
-/src/lib
 /dist
 /node
+/src/common
 school.txt
