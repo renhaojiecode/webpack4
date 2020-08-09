@@ -110,7 +110,8 @@ let screenList = [
   },
 ]
 import mList from './data.js'
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -131,8 +132,12 @@ export default {
   },
   mounted() {
     //
+    this.getData(20)
   },
   methods: {
+    ...mapActions([
+      'getData'
+    ]),
     screenClick(item) {
       item.cur = !item.cur
       item.cur && this.increment()

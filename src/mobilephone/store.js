@@ -14,12 +14,31 @@ const store = new Vuex.Store({
     }
   },
   mutations: {
-    increment(state) {
-      state.count++
+    increment(state, payload) {
+      if (payload) {
+        state.count = payload
+      } else {
+        state.count++
+      }
     },
     decrement(state) {
       state.count--
     },
+  },
+  actions: {
+    getData({commit}, payload = 10) {
+      new Promise(resolve => {
+        setTimeout(() => {
+          resolve({data: {
+            code: 200,
+            data: payload
+          }})
+        }, 3000)
+      }).then(res => {
+        let data = res.data.data
+        commit('increment', data)
+      })
+    }
   }
 })
 // store.commit('increment')
