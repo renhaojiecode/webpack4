@@ -61,6 +61,8 @@ import eslint from './sunmup/eslint.js'
 import webpack from './sunmup/Webpack.js'
 import http from './sunmup/http.js'
 import codeSpeedUp from './sunmup/code-speed-up.js'
+import mobileHack from './sunmup/mobileHack.js'
+import nginx from './sunmup/nginx.js'
 
 // import testVue from './components/test.vue'
 
@@ -88,6 +90,8 @@ export default {
         http,
         codeSpeedUp,
         eslint,
+        mobileHack,
+        nginx,
       ],
     }
   },

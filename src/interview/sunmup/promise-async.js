@@ -63,6 +63,62 @@ new Promise(function(resolve) {
 });
 console.log('script end');
 /* script start / async1 start / async2 / promise1 / script end / async1 end / promise2 / setTimeout */`,
-    }
+    },
+    {
+      title: 'Generator 小试',
+      jsCode: `let testFnList = [function(payload, nextFn) {
+        console.log('payload', payload)
+        payload.url += 'fn1/'
+        nextFn(payload)
+      }, function(payload, nextFn) {
+        console.log('payload', payload)
+        payload.url += 'fn2/'
+        nextFn(payload)
+      }, function(payload, nextFn) {
+        console.log('payload', payload)
+        payload.url += 'fn3/'
+        nextFn(payload)
+      }]
+      let payload = {
+        url: 'http://'
+      }
+      middleware()
+      function middleware() {
+        let gFn = beforeLogoutTestGeneratorFn(testFnList)
+        let reVal = {done: false}
+        nextFn(payload)
+        function nextFn(payload) {
+          reVal = gFn.next()
+          console.log('reVal', reVal)
+          if (!reVal.done) {
+            reVal.value(payload, nextFn)
+          } else {
+            // 结束
+            console.log('done',payload)
+          }
+        }
+      }
+      
+      function* beforeLogoutTestGeneratorFn(list) {
+        for(let val of list) {
+          yield val
+        }
+      }`,
+      desc: [
+        '',
+      ],
+      img: [
+        // '<img src="' + require('../img/async-await.jpg') + '"/>',
+      ]
+    },
+    {
+      title: '',
+      jsCode: ``,
+      desc: [
+        '<br>&nbsp;&nbsp;  ',
+      ],
+      img: []
+    },
   ]
 }
+

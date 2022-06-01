@@ -17,6 +17,8 @@ module.exports = {
     interview: './src/interview/index.js',
     mobilephone: './src/mobilephone/index.js',
     video: './src/video/index.js',
+    webcomponents: './src/webcomponents/index.js',
+    vuedev: './src/vuedev/index.js',
   },
   output: {
     filename: '[name]/bundle-[chunkhash:18].js',
@@ -118,7 +120,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(jpg|png|gif|svg|ico|eot|ttf|otf|woff|woff2|webp)$/,
+        test: /\.(jpg|png|jpeg|gif|svg|ico|eot|ttf|otf|woff|woff2|webp)$/,
         use: [
           {
             loader: 'file-loader',
@@ -209,6 +211,18 @@ module.exports = {
       template: './src/video/index.html',
       filename: 'video/index.html',
       chunks: ['video'],
+      favicon: './favicon.png'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/webcomponents/index.html',
+      filename: 'webcomponents/index.html',
+      chunks: ['webcomponents'],
+      favicon: './favicon.png'
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/vuedev/index.html',
+      filename: 'vuedev/index.html',
+      chunks: ['vuedev'],
       favicon: './favicon.png'
     }),
     new AddAssetHtmlPlugin({
